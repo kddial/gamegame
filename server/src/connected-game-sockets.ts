@@ -14,7 +14,7 @@ class ConnectedGameSockets {
   }
 
   connectSocket(socket: WebSocket) {
-    const newGameSocket = new GameSocket(socket, this.idCounter++);
+    const newGameSocket = new GameSocket(this, socket, this.idCounter++);
     this.gameSockets.push(newGameSocket);
     this.broadcastAllGameSocketsInfo();
   }
@@ -26,6 +26,18 @@ class ConnectedGameSockets {
     });
 
     this.wsServer.broadcast(formatBroadcastMessage(broadcastMessage));
+  }
+
+  removeGameSocketById(id: number) {
+    const { gameSockets } = this;
+    for (let i = 0; i < gameSockets.length; i++) {
+      if (gameSockets[i].id === id) {
+        gameSockets.splice(i, 1);
+      }
+    }
+
+    // broadcast new info
+    this.broadcastAllGameSocketsInfo();
   }
 }
 
