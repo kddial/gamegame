@@ -1,0 +1,55 @@
+<html>
+  <head>
+    <title>game game</title>
+  </head>
+  <body>
+    <div>game game</div>
+
+    <br />
+    <div>
+      self info:
+      <div id="self-info"></div>
+    </div>
+
+    <br />
+    <div>
+      broadcast info:
+      <div id="broadcast-info"></div>
+    </div>
+
+    <script>
+      const PORT = 2000;
+      const SELF = 'SELF';
+      const BROADCAST = 'BROADCAST';
+
+      const socket = new WebSocket(`ws://localhost:${PORT}`);
+      socket.onopen = (event) => {
+        console.log('-- on open');
+      };
+
+      socket.onerror = (err) => {
+        console.error(err);
+      };
+
+      socket.onclose = (event) => {
+        console.log('-- on close');
+      };
+
+      socket.onmessage = (event) => {
+        const data = event.data;
+
+        const [messageType, restData] = data.split('::');
+        console.log('messagetype', messageType);
+        console.log('restData', restData);
+
+        if (messageType === SELF) {
+          const selfInfo = restData;
+          document.getElementById('self-info').innerHTML = selfInfo;
+        } else if (messageType === BROADCAST) {
+          const broadcastInfo = restData;
+          document.getElementById('broadcast-info').innerHTML = broadcastInfo;
+        }
+      };
+    </script>
+  </body>
+</html>
