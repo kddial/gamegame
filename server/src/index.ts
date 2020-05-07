@@ -1,5 +1,3 @@
-// kevin
-
 import { createServer } from 'http';
 import { WebSocketServer } from '@clusterws/cws';
 import ConnectedSockets from './connected-game-sockets';

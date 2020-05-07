@@ -6,12 +6,14 @@ import GameLoop from './game-loop.js';
 import KeyPress from './key-press.js';
 import Platform from './platform.js';
 import Platforms from './platforms.js';
+import Socket from './socket.js';
 
 const canvasInstance = new Canvas();
 const playerInstance = new Player();
 const platformSpriteInstance = new PlatformSprite(canvasInstance.ctx);
 const playerSpriteInstance = new PlayerSprite(canvasInstance.ctx, init);
 const platformsInstance = new Platforms();
+const socketInstance = new Socket();
 
 // step frame
 function step() {
