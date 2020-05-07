@@ -10,10 +10,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@clusterws/cws": "^1.6.0"
+    "@clusterws/cws": "^1.6.0",
+    "serve-handler": "^6.1.2"
   },
   "devDependencies": {
     "@types/node": "^13.13.5",
+    "@types/serve-handler": "^6.1.0",
     "ts-node": "^8.10.1",
     "ts-node-dev": "^1.0.0-pre.44",
     "typescript": "^3.8.3"

@@ -2,13 +2,15 @@
 
 import { createServer } from 'http';
 import { WebSocketServer } from '@clusterws/cws';
-import fs from 'fs';
 import ConnectedSockets from './connected-game-sockets';
+import handler from 'serve-handler';
 
 const PORT = 2000;
 const http = createServer((req, res) => {
-  res.writeHead(200, { 'Content-Type': 'text/html' });
-  fs.createReadStream('./src/html_client.html').pipe(res);
+  // serve static files
+  return handler(req, res, {
+    public: 'src/client',
+  });
 });
 const wsServer = new WebSocketServer({
   server: http,
