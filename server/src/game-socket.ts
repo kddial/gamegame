@@ -16,7 +16,7 @@ class GameSocket {
     this.id = id;
     this.connectedGameSockets = connectedGameSockets;
 
-    this.socket.on('close', () => this.onSocketClose());
+    this.socket.on('close', this.onSocketClose);
     this.sendSelfFormattedInfo();
   }
 
@@ -29,9 +29,9 @@ class GameSocket {
     return formatGameSocketInfo(this.id);
   }
 
-  onSocketClose() {
+  onSocketClose = () => {
     this.connectedGameSockets.removeGameSocketById(this.id);
-  }
+  };
 }
 
 export default GameSocket;
