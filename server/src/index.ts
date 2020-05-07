@@ -1,7 +1,7 @@
 // kevin
 
 import { createServer } from 'http';
-import { WebSocket } from '@clusterws/cws';
+import { WebSocketServer } from '@clusterws/cws';
 import fs from 'fs';
 import ConnectedSockets from './connected-game-sockets';
 
@@ -10,9 +10,10 @@ const http = createServer((req, res) => {
   res.writeHead(200, { 'Content-Type': 'text/html' });
   fs.createReadStream('./src/html_client.html').pipe(res);
 });
-const wsServer = new WebSocket.Server({
+const wsServer = new WebSocketServer({
   server: http,
 });
+wsServer.startAutoPing(10000, true); // check if clients are alive, every 10 sec
 const connectedSocketsInstance = new ConnectedSockets(wsServer);
 
 http.listen(PORT, () => {

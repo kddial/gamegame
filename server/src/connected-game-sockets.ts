@@ -1,18 +1,19 @@
 import GameSocket from './game-socket';
 import { formatBroadcastMessage } from './constants';
+import { WebSocketServer, WebSocket } from '@clusterws/cws';
 
 class ConnectedGameSockets {
   idCounter: number;
-  gameSockets: any; // TODO?? an array of WebSockets
-  wsServer: any; // TODO Websocketserver
+  gameSockets: Array<GameSocket>;
+  wsServer: WebSocketServer;
 
-  constructor(wsServer) {
+  constructor(wsServer: WebSocketServer) {
     this.idCounter = 1000;
     this.gameSockets = [];
     this.wsServer = wsServer;
   }
 
-  connectSocket(socket) {
+  connectSocket(socket: WebSocket) {
     const newGameSocket = new GameSocket(socket, this.idCounter++);
     this.gameSockets.push(newGameSocket);
     this.broadcastAllGameSocketsInfo();

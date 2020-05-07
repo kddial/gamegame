@@ -1,7 +1,11 @@
 import { formatGameSocketInfo, formatSelfInfo } from './constants';
+import { WebSocketServer, WebSocket } from '@clusterws/cws';
 
 class GameSocket {
-  constructor(serverSocket, id) {
+  socket: WebSocket;
+  id: number;
+
+  constructor(serverSocket: WebSocket, id: number) {
     this.socket = serverSocket;
     this.id = id;
 
