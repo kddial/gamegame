@@ -1,11 +1,20 @@
-import { formatGameSocketInfo, formatSelfInfo } from './constants';
+import { formatGameSocketInfo, formatSelfInfo } from './formatters';
 import { WebSocket } from '@clusterws/cws';
 import ConnectedGameSockets from './connected-game-sockets';
+import {
+  MSG_PLAYER,
+  MSG_TYPE_DELIM,
+  MSG_DATA_DELIM,
+} from './client/socket-constants.js';
 
 class GameSocket {
   connectedGameSockets: ConnectedGameSockets;
   socket: WebSocket;
   id: number;
+  x: number;
+  y: number;
+  pose: string;
+  horizontalScale: number;
 
   constructor(
     connectedGameSockets: ConnectedGameSockets,
@@ -17,6 +26,7 @@ class GameSocket {
     this.connectedGameSockets = connectedGameSockets;
 
     this.socket.on('close', this.onSocketClose);
+    this.socket.on('message', this.onSocketMessage);
     this.sendSelfFormattedInfo();
   }
 
@@ -31,6 +41,18 @@ class GameSocket {
 
   onSocketClose = () => {
     this.connectedGameSockets.removeGameSocketById(this.id);
+  };
+
+  onSocketMessage = (message: string) => {
+    const [messageType, messageData] = message.split(MSG_TYPE_DELIM);
+
+    if (messageType === MSG_PLAYER) {
+      const [x, y, pose, horizontalScale] = messageData.split(MSG_DATA_DELIM);
+      this.x = parseInt(x);
+      this.y = parseInt(y);
+      this.pose = pose;
+      this.horizontalScale = parseInt(horizontalScale);
+    }
   };
 }
 

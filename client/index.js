@@ -23,6 +23,7 @@ function step() {
     playerSprite: playerSpriteInstance,
     platforms: platformsInstance,
     platformSprite: platformSpriteInstance,
+    socket: socketInstance,
   });
   window.requestAnimationFrame(step);
   return;

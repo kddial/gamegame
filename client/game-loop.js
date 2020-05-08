@@ -6,9 +6,12 @@ const GameLoop = ({
   playerSprite,
   platforms,
   platformSprite,
+  socket,
 }) => {
   // update player positions
   player.step(platforms);
+  // send updated player position to socket
+  socket.sendPlayerInfo(player);
 
   //--- drawing ---
   canvas.resetFrame();

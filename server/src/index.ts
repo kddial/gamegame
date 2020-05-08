@@ -10,10 +10,12 @@ const http = createServer((req, res) => {
     public: 'src/client',
   });
 });
+
 const wsServer = new WebSocketServer({
   server: http,
 });
 wsServer.startAutoPing(10000, true); // check if clients are alive, every 10 sec
+
 const connectedSocketsInstance = new ConnectedSockets(wsServer);
 
 http.listen(PORT, () => {

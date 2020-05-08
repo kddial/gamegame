@@ -1,6 +1,11 @@
-const PORT = 2000;
-const SELF = 'SELF';
-const BROADCAST = 'BROADCAST';
+const {
+  MSG_SELF,
+  MSG_BROADCAST,
+  MSG_PLAYER,
+  MSG_TYPE_DELIM,
+} = window.gamegame.CONSTANTS;
+
+const PORT = 2000; // web socket port
 const PING = 57;
 const PONG = new Uint8Array(['A'.charCodeAt()]);
 
@@ -13,6 +18,7 @@ class Socket {
     this.socket.onerror = this.onError;
     this.socket.onclose = this.onClose;
     this.socket.onmessage = this.onMessage;
+    this.frameCounter = 0;
   }
 
   onOpen = (event) => {
@@ -25,6 +31,7 @@ class Socket {
 
   onClose = (event) => {
     console.log('-- on close');
+    this.socket = null;
   };
 
   onMessage = (event) => {
@@ -36,20 +43,43 @@ class Socket {
       let buffer = new Uint8Array(data);
 
       if (buffer.length === 1 && buffer[0] === PING) {
-        this.socket.send(PONG);
+        this.send(PONG);
         return;
       }
     }
 
-    const [messageType, restData] = data.split('::');
-    if (messageType === SELF) {
+    const [messageType, restData] = data.split(MSG_TYPE_DELIM);
+    if (messageType === MSG_SELF) {
       const selfInfo = restData;
       document.getElementById('self-info').innerHTML = selfInfo;
       return;
-    } else if (messageType === BROADCAST) {
+    } else if (messageType === MSG_BROADCAST) {
       const broadcastInfo = restData;
       document.getElementById('broadcast-info').innerHTML = broadcastInfo;
       return;
+    }
+  };
+
+  sendPlayerInfo = (player) => {
+    const sendEveryNFrame = 10;
+    const { x, y, pose, horizontalScale } = player;
+    const socketMessage = `${MSG_PLAYER}${MSG_TYPE_DELIM}${x}__${y}__${pose}__${horizontalScale}`;
+
+    // dont spam the server with results every frame
+    // send at every 10 frames instead
+    if (this.frameCounter === 0) {
+      this.send(socketMessage);
+      this.frameCounter++;
+    } else if (this.frameCounter === sendEveryNFrame) {
+      this.frameCounter = 0;
+    } else {
+      this.frameCounter++;
+    }
+  };
+
+  send = (message) => {
+    if (this.socket) {
+      this.socket.send(message);
     }
   };
 }
