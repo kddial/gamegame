@@ -1,4 +1,4 @@
-import { formatGameSocketInfo, formatSelfInfo } from './formatters';
+import { formatPlayerInfo, formatSelfInfo } from './formatters';
 import { WebSocket } from '@clusterws/cws';
 import ConnectedGameSockets from './connected-game-sockets';
 import {
@@ -30,14 +30,29 @@ class GameSocket {
     this.sendSelfFormattedInfo();
   }
 
-  sendSelfFormattedInfo() {
-    const selfFormattedInfo = formatSelfInfo(this.getFormattedInfo());
+  sendSelfFormattedInfo = () => {
+    const selfFormattedInfo = formatSelfInfo(this.id);
     this.socket.send(selfFormattedInfo);
-  }
+  };
 
-  getFormattedInfo() {
-    return formatGameSocketInfo(this.id);
-  }
+  getPlayerFormattedInfo = () => {
+    if (
+      this.x === undefined ||
+      this.y === undefined ||
+      this.pose === undefined ||
+      this.horizontalScale === undefined
+    ) {
+      return '';
+    }
+
+    return formatPlayerInfo(
+      this.x,
+      this.y,
+      this.pose,
+      this.horizontalScale,
+      this.id,
+    );
+  };
 
   onSocketClose = () => {
     this.connectedGameSockets.removeGameSocketById(this.id);
@@ -47,11 +62,16 @@ class GameSocket {
     const [messageType, messageData] = message.split(MSG_TYPE_DELIM);
 
     if (messageType === MSG_PLAYER) {
-      const [x, y, pose, horizontalScale] = messageData.split(MSG_DATA_DELIM);
+      const [x, y, pose, horizontalScale, id] = messageData.split(
+        MSG_DATA_DELIM,
+      );
       this.x = parseInt(x);
       this.y = parseInt(y);
       this.pose = pose;
       this.horizontalScale = parseInt(horizontalScale);
+
+      // broadcast new info to all clients
+      this.connectedGameSockets.broadcastAllGameSocketsInfo();
     }
   };
 }

@@ -18,19 +18,25 @@ class Socket {
     this.socket.onerror = this.onError;
     this.socket.onclose = this.onClose;
     this.socket.onmessage = this.onMessage;
+    this.isConnected = false;
     this.frameCounter = 0;
+    this.id;
   }
 
   onOpen = (event) => {
     console.log('-- on open');
+    this.isConnected = true;
   };
 
   onError = (err) => {
     console.error(err);
+    this.isConnected = false;
+    this.socket = null;
   };
 
   onClose = (event) => {
     console.log('-- on close');
+    this.isConnected = false;
     this.socket = null;
   };
 
@@ -48,9 +54,10 @@ class Socket {
       }
     }
 
-    const [messageType, restData] = data.split(MSG_TYPE_DELIM);
+    const [messageType, ...restData] = data.split(MSG_TYPE_DELIM);
     if (messageType === MSG_SELF) {
       const selfInfo = restData;
+      this.id = selfInfo;
       document.getElementById('self-info').innerHTML = selfInfo;
       return;
     } else if (messageType === MSG_BROADCAST) {
@@ -63,7 +70,8 @@ class Socket {
   sendPlayerInfo = (player) => {
     const sendEveryNFrame = 10;
     const { x, y, pose, horizontalScale } = player;
-    const socketMessage = `${MSG_PLAYER}${MSG_TYPE_DELIM}${x}__${y}__${pose}__${horizontalScale}`;
+
+    const socketMessage = `${MSG_PLAYER}${MSG_TYPE_DELIM}${x}__${y}__${pose}__${horizontalScale}__${this.id}`;
 
     // dont spam the server with results every frame
     // send at every 10 frames instead
@@ -78,7 +86,7 @@ class Socket {
   };
 
   send = (message) => {
-    if (this.socket) {
+    if (this.socket && this.isConnected) {
       this.socket.send(message);
     }
   };

@@ -1,15 +1,22 @@
 import {
   MSG_SELF,
+  MSG_PLAYER,
   MSG_BROADCAST,
   MSG_TYPE_DELIM,
 } from './client/socket-constants';
 
-export const formatGameSocketInfo = (id: number) => {
-  return `${id}__`;
+export const formatPlayerInfo = (
+  x: number,
+  y: number,
+  pose: string,
+  horizontalScale: number,
+  id: number,
+) => {
+  return `${MSG_PLAYER}${MSG_TYPE_DELIM}${x}__${y}__${pose}__${horizontalScale}__${id}${MSG_TYPE_DELIM}`;
 };
 
-export const formatSelfInfo = (bodyInfo: string) => {
-  return `${MSG_SELF}${MSG_TYPE_DELIM}${bodyInfo}`;
+export const formatSelfInfo = (id: number) => {
+  return `${MSG_SELF}${MSG_TYPE_DELIM}${id}`;
 };
 
 export const formatBroadcastMessage = (broadcastMessage: string) => {

@@ -22,9 +22,11 @@ class ConnectedGameSockets {
   broadcastAllGameSocketsInfo() {
     let broadcastMessage = '';
     this.gameSockets.forEach((gameSocket) => {
-      broadcastMessage += gameSocket.getFormattedInfo();
+      broadcastMessage += gameSocket.getPlayerFormattedInfo();
     });
 
+    // Allow to still split on "::" for child type messages. Looks like this
+    // BROADCAST::PLAYER::x__y__pose__horiz__::PLAYER::player_data::PLAYER::player_data::
     this.wsServer.broadcast(formatBroadcastMessage(broadcastMessage));
   }
 
