@@ -207,11 +207,17 @@ export class OtherPlayersSprite {
       }
 
       const mockPlayer = { x, y, pose, horizontalScale };
-      console.log('should render id', id);
       this.otherPlayersSpriteInstances[id].drawPlayerSprite(mockPlayer);
     });
 
-    // todo, remove any leftover sprite instances from this.otherPlayersSpriteInstances
+    // remove any leftover sprite instances from this.otherPlayersSpriteInstances
+    const otherPlayersId = otherPlayersInfoArray.map((info) => info.id);
+    Object.keys(this.otherPlayersSpriteInstances).forEach((instanceId) => {
+      if (otherPlayersId.includes(instanceId) === false) {
+        this.otherPlayersSpriteInstances[instanceId] = undefined;
+        delete this.otherPlayersSpriteInstances[instanceId];
+      }
+    });
   };
 }
 
