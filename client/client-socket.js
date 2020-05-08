@@ -3,6 +3,7 @@ const {
   MSG_BROADCAST,
   MSG_PLAYER,
   MSG_TYPE_DELIM,
+  MSG_DATA_DELIM,
 } = window.gamegame.CONSTANTS;
 
 const PORT = 2000; // web socket port
@@ -22,6 +23,12 @@ class ClientSocket {
     this.frameCounter = 0;
     this.id;
   }
+
+  send = (message) => {
+    if (this.socket && this.isConnected) {
+      this.socket.send(message);
+    }
+  };
 
   onOpen = (event) => {
     console.log('-- on open');
@@ -56,15 +63,46 @@ class ClientSocket {
 
     const [messageType, ...restData] = data.split(MSG_TYPE_DELIM);
     if (messageType === MSG_SELF) {
-      const selfInfo = restData;
-      this.id = selfInfo;
-      document.getElementById('self-info').innerHTML = selfInfo;
+      this.processSelfMessage(restData);
       return;
     } else if (messageType === MSG_BROADCAST) {
-      const broadcastInfo = restData;
-      document.getElementById('broadcast-info').innerHTML = broadcastInfo;
+      this.processBroadcastMessage(restData);
       return;
     }
+  };
+
+  processSelfMessage = (messageArray) => {
+    this.id = messageArray[0];
+    document.getElementById('self-info').innerHTML = messageArray;
+  };
+
+  processBroadcastMessage = (messageArray) => {
+    // get list of other players info
+    // messageArray e.g. ['MSG_PLAYER', 'x__y__pose__scale', 'MSG_PLAYER', 'x__y__pose__scale', ...]
+    const otherPlayersInfo = [];
+
+    let i = 0;
+    while (i < messageArray.length) {
+      if (messageArray[i] === MSG_PLAYER) {
+        i++;
+        const [x, y, pose, horizontalScale, id] = messageArray[i].split(
+          MSG_DATA_DELIM,
+        );
+
+        if (id !== this.id) {
+          otherPlayersInfo.push({
+            x,
+            y,
+            pose,
+            horizontalScale,
+            id,
+          });
+        }
+      }
+      i++;
+    }
+
+    document.getElementById('broadcast-info').innerHTML = messageArray;
   };
 
   sendPlayerInfo = (player) => {
@@ -82,12 +120,6 @@ class ClientSocket {
       this.frameCounter = 0;
     } else {
       this.frameCounter++;
-    }
-  };
-
-  send = (message) => {
-    if (this.socket && this.isConnected) {
-      this.socket.send(message);
     }
   };
 }
