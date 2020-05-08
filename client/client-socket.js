@@ -9,7 +9,7 @@ const PORT = 2000; // web socket port
 const PING = 57;
 const PONG = new Uint8Array(['A'.charCodeAt()]);
 
-class Socket {
+class ClientSocket {
   constructor() {
     this.socket = new WebSocket(`ws://localhost:${PORT}`);
     this.socket.binaryType = 'arraybuffer';
@@ -92,4 +92,4 @@ class Socket {
   };
 }
 
-export default Socket;
+export default ClientSocket;

@@ -6,14 +6,14 @@ import GameLoop from './game-loop.js';
 import KeyPress from './key-press.js';
 import Platform from './platform.js';
 import Platforms from './platforms.js';
-import Socket from './socket.js';
+import ClientSocket from './client-socket.js';
 
 const canvasInstance = new Canvas();
 const playerInstance = new Player();
 const platformSpriteInstance = new PlatformSprite(canvasInstance.ctx);
 const playerSpriteInstance = new PlayerSprite(canvasInstance.ctx, init);
 const platformsInstance = new Platforms();
-const socketInstance = new Socket();
+const clientSocketInstance = new ClientSocket();
 
 // step frame
 function step() {
@@ -23,7 +23,7 @@ function step() {
     playerSprite: playerSpriteInstance,
     platforms: platformsInstance,
     platformSprite: platformSpriteInstance,
-    socket: socketInstance,
+    clientSocket: clientSocketInstance,
   });
   window.requestAnimationFrame(step);
   return;
