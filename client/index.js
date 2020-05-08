@@ -1,5 +1,5 @@
 import PlatformSprite from './platform-sprite.js';
-import PlayerSprite from './player-sprite.js';
+import PlayerSprite, { OtherPlayersSprite } from './player-sprite.js';
 import Player from './player.js';
 import Canvas from './canvas.js';
 import GameLoop from './game-loop.js';
@@ -12,6 +12,7 @@ const canvasInstance = new Canvas();
 const playerInstance = new Player();
 const platformSpriteInstance = new PlatformSprite(canvasInstance.ctx);
 const playerSpriteInstance = new PlayerSprite(canvasInstance.ctx, init);
+const otherPlayersSpriteInstance = new OtherPlayersSprite(canvasInstance.ctx);
 const platformsInstance = new Platforms();
 const clientSocketInstance = new ClientSocket();
 
@@ -21,6 +22,7 @@ function step() {
     canvas: canvasInstance,
     player: playerInstance,
     playerSprite: playerSpriteInstance,
+    otherPlayersSprite: otherPlayersSpriteInstance,
     platforms: platformsInstance,
     platformSprite: platformSpriteInstance,
     clientSocket: clientSocketInstance,

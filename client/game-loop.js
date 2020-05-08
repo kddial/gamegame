@@ -4,6 +4,7 @@ const GameLoop = ({
   canvas,
   player,
   playerSprite,
+  otherPlayersSprite,
   platforms,
   platformSprite,
   clientSocket,
@@ -23,6 +24,9 @@ const GameLoop = ({
   // draw player
   playerSprite.drawPlayerSprite(player);
   SHOW_HIT_BOX && playerSprite.drawPlayerHitBox(player);
+
+  // draw other players
+  otherPlayersSprite.renderOtherPlayersSprite(clientSocket.otherPlayersInfo);
 };
 
 export default GameLoop;

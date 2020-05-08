@@ -186,4 +186,33 @@ class PlayerSprite {
   }
 }
 
+// Class to handle rendering other client player's sprites
+export class OtherPlayersSprite {
+  constructor(ctx) {
+    this.ctx = ctx;
+    this.otherPlayersSpriteInstances = {};
+  }
+
+  renderOtherPlayersSprite = (otherPlayersInfoArray) => {
+    otherPlayersInfoArray.forEach((otherPlayerInfo) => {
+      const { x, y, pose, horizontalScale, id } = otherPlayerInfo;
+
+      if (
+        Object.keys(this.otherPlayersSpriteInstances).includes(id) === false
+      ) {
+        // instance does not exist, create new
+        const spriteInstance = new PlayerSprite(this.ctx, () => {});
+        spriteInstance.other = true;
+        this.otherPlayersSpriteInstances[id] = spriteInstance;
+      }
+
+      const mockPlayer = { x, y, pose, horizontalScale };
+      console.log('should render id', id);
+      this.otherPlayersSpriteInstances[id].drawPlayerSprite(mockPlayer);
+    });
+
+    // todo, remove any leftover sprite instances from this.otherPlayersSpriteInstances
+  };
+}
+
 export default PlayerSprite;

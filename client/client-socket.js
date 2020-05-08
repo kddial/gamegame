@@ -22,6 +22,7 @@ class ClientSocket {
     this.isConnected = false;
     this.frameCounter = 0;
     this.id;
+    this.otherPlayersInfo = [];
   }
 
   send = (message) => {
@@ -91,36 +92,38 @@ class ClientSocket {
 
         if (id !== this.id) {
           otherPlayersInfo.push({
-            x,
-            y,
+            x: parseInt(x),
+            y: parseInt(y),
             pose,
-            horizontalScale,
+            horizontalScale: parseInt(horizontalScale),
             id,
           });
         }
       }
       i++;
     }
+    this.otherPlayersInfo = otherPlayersInfo;
 
     document.getElementById('broadcast-info').innerHTML = messageArray;
   };
 
   sendPlayerInfo = (player) => {
-    const sendEveryNFrame = 10;
     const { x, y, pose, horizontalScale } = player;
-
     const socketMessage = `${MSG_PLAYER}${MSG_TYPE_DELIM}${x}__${y}__${pose}__${horizontalScale}__${this.id}`;
+    this.send(socketMessage);
 
+    // premature optimization !! might delete later
     // dont spam the server with results every frame
     // send at every 10 frames instead
-    if (this.frameCounter === 0) {
-      this.send(socketMessage);
-      this.frameCounter++;
-    } else if (this.frameCounter === sendEveryNFrame) {
-      this.frameCounter = 0;
-    } else {
-      this.frameCounter++;
-    }
+    // const sendEveryNFrame = 1;
+    // if (this.frameCounter === 0) {
+    //   this.send(socketMessage);
+    //   this.frameCounter++;
+    // } else if (this.frameCounter === sendEveryNFrame) {
+    //   this.frameCounter = 0;
+    // } else {
+    //   this.frameCounter++;
+    // }
   };
 }
 
