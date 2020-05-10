@@ -1,4 +1,4 @@
-// shared between client and server
+// duplicate file should be the SAME content in client and server
 
 // message types
 export const MSG_SELF = 'MSG_SELF';
