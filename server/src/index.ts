@@ -2,12 +2,13 @@ import { createServer } from 'http';
 import { WebSocketServer } from '@clusterws/cws';
 import ConnectedSockets from './connected-game-sockets';
 import handler from 'serve-handler';
+import path from 'path';
 
 const PORT = 2000;
 const http = createServer((req, res) => {
-  // serve static files
+  // serve static html & image files
   return handler(req, res, {
-    public: 'src/client',
+    public: path.join(__dirname, '..', 'client'),
   });
 });
 
