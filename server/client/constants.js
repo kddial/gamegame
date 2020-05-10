@@ -2,6 +2,7 @@ import * as socketConstants from './socket-constants.js';
 
 const CONSTANTS = {
   // debug variables
+  SHOW_SOCKET_INFO: false,
   SHOW_HIT_BOX: false,
   SHOW_SPRITE_BOX: false, // depends on SHOW_HIT_BOX being true
 

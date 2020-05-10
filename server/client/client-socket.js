@@ -74,11 +74,15 @@ class ClientSocket {
   };
 
   processSelfMessage = (messageArray) => {
+    const { SHOW_SOCKET_INFO } = window.gamegame.CONSTANTS;
     this.id = messageArray[0];
-    document.getElementById('self-info').innerHTML = messageArray;
+    if (SHOW_SOCKET_INFO) {
+      document.getElementById('self-info').innerHTML = messageArray;
+    }
   };
 
   processBroadcastMessage = (messageArray) => {
+    const { SHOW_SOCKET_INFO } = window.gamegame.CONSTANTS;
     // get list of other players info
     // messageArray e.g. ['MSG_PLAYER', 'x__y__pose__scale', 'MSG_PLAYER', 'x__y__pose__scale', ...]
     const otherPlayersInfo = [];
@@ -105,7 +109,9 @@ class ClientSocket {
     }
     this.otherPlayersInfo = otherPlayersInfo;
 
-    document.getElementById('broadcast-info').innerHTML = messageArray;
+    if (SHOW_SOCKET_INFO) {
+      document.getElementById('broadcast-info').innerHTML = messageArray;
+    }
   };
 
   sendPlayerInfo = (player) => {
