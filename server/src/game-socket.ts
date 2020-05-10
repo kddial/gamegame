@@ -5,7 +5,7 @@ import {
   MSG_PLAYER,
   MSG_TYPE_DELIM,
   MSG_DATA_DELIM,
-} from './client/socket-constants.js';
+} from './socket-constants.js';
 
 class GameSocket {
   connectedGameSockets: ConnectedGameSockets;

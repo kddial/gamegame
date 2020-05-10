@@ -3,7 +3,7 @@ import {
   MSG_PLAYER,
   MSG_BROADCAST,
   MSG_TYPE_DELIM,
-} from './client/socket-constants';
+} from './socket-constants';
 
 export const formatPlayerInfo = (
   x: number,
