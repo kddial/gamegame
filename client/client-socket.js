@@ -7,12 +7,13 @@ const {
 } = window.gamegame.CONSTANTS;
 
 const PORT = 2000; // web socket port
+const HOST = window.location.host;
 const PING = 57;
 const PONG = new Uint8Array(['A'.charCodeAt()]);
 
 class ClientSocket {
   constructor() {
-    this.socket = new WebSocket(`ws://localhost:${PORT}`);
+    this.socket = new WebSocket(`ws://${HOST}`);
     this.socket.binaryType = 'arraybuffer';
 
     this.socket.onopen = this.onOpen;
