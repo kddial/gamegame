@@ -27,10 +27,3 @@ wsServer.on('connection', (socket, req) => {
   console.log('web socket connection init');
   connectedSocketsInstance.connectSocket(socket);
 });
-
-// todo for multiplayer
-// server: assign a unique id to each socket (player)
-// server: assign (x, y) coordinates to each player
-// client: display its player's id, and display all players ID and their x,y coordinates
-// server: continously update physics positions
-// client: also update physics, but check with server physics and keep things in sync every few frames.
