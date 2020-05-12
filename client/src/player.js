@@ -2,7 +2,7 @@ import {
   getPlayerButtonState,
   resetJumpKeyDownForNextFrame,
 } from './key-press.js';
-
+import CONSTANTS from './constants.js';
 const {
   LEFT,
   RIGHT,
@@ -13,7 +13,7 @@ const {
   JUMP_Y_VELOCITY,
   GRAVITY_Y_VELOCITY,
   PLATFORM_FLOOR_Y,
-} = window.gamegame.CONSTANTS;
+} = CONSTANTS;
 
 class Player {
   constructor() {

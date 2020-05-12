@@ -1,3 +1,4 @@
+import CONSTANTS from './constants.js';
 const {
   IDLE_RIGHT,
   IDLE_LEFT,
@@ -7,7 +8,7 @@ const {
   RUN_LEFT,
   RIGHT,
   LEFT,
-} = window.gamegame.CONSTANTS;
+} = CONSTANTS;
 
 // define glocal variables used in this file
 const _keyPress = {};

@@ -1,3 +1,4 @@
+import CONSTANTS from './constants.js';
 const {
   IMG_PATH_PREFIX,
   PLATFORM_SPRITE_W,
@@ -5,7 +6,8 @@ const {
   HIT_BOX_COLOR,
   SPRITE_BOX_COLOR,
   SHOW_SPRITE_BOX,
-} = window.gamegame.CONSTANTS;
+} = CONSTANTS;
+
 import { drawBorderRect } from './constants.js';
 const IMG_SPRITE_PATH = 'platform_v1.1.png';
 

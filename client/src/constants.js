@@ -57,10 +57,4 @@ export function drawBorderRect(ctx, x, y, width, height, color) {
   ctx.stroke();
 }
 
-// TODO HACKY
-// initialize use of window.gamegame exploit to share things through files
-window.gamegame = {
-  CONSTANTS,
-};
-
 export default CONSTANTS;

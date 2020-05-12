@@ -5,6 +5,7 @@ const {
   MSG_PLAYER,
   MSG_TYPE_DELIM,
   MSG_DATA_DELIM,
+  SHOW_SOCKET_INFO,
 } = CONSTANTS;
 
 const PORT = 2000; // web socket port
@@ -75,7 +76,6 @@ class ClientSocket {
   };
 
   processSelfMessage = (messageArray) => {
-    const { SHOW_SOCKET_INFO } = window.gamegame.CONSTANTS;
     this.id = messageArray[0];
     if (SHOW_SOCKET_INFO) {
       document.getElementById('self-info').innerHTML = messageArray;
@@ -83,7 +83,6 @@ class ClientSocket {
   };
 
   processBroadcastMessage = (messageArray) => {
-    const { SHOW_SOCKET_INFO } = window.gamegame.CONSTANTS;
     // get list of other players info
     // messageArray e.g. ['MSG_PLAYER', 'x__y__pose__scale', 'MSG_PLAYER', 'x__y__pose__scale', ...]
     const otherPlayersInfo = [];

@@ -1,4 +1,5 @@
-const { PLATFORM_SPRITE_W, PLATFORM_SPRITE_H } = window.gamegame.CONSTANTS;
+import CONSTANTS from './constants.js';
+const { PLATFORM_SPRITE_W, PLATFORM_SPRITE_H } = CONSTANTS;
 
 class Platform {
   constructor(x, y, width, spriteSeed) {
