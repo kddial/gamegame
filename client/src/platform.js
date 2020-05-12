@@ -13,5 +13,4 @@ class Platform {
   }
 }
 
-window.gamegame.classes.Platform = Platform;
 export default Platform;

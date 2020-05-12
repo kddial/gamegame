@@ -1,10 +1,11 @@
+import CONSTANTS from './constants.js';
 const {
   MSG_SELF,
   MSG_BROADCAST,
   MSG_PLAYER,
   MSG_TYPE_DELIM,
   MSG_DATA_DELIM,
-} = window.gamegame.CONSTANTS;
+} = CONSTANTS;
 
 const PORT = 2000; // web socket port
 const HOST = window.location.host;

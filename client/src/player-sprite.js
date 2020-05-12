@@ -9,7 +9,7 @@ const {
   HIT_BOX_COLOR,
   SHOW_SPRITE_BOX,
 } = window.gamegame.CONSTANTS;
-const { drawBorderRect } = window.gamegame;
+import { drawBorderRect } from './constants.js';
 const IMG_SPRITE_PATH = 'adventurer-v1_5-sheet.png';
 
 const SPRITE_POSES = {

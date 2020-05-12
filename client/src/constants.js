@@ -50,7 +50,7 @@ const CONSTANTS = {
 };
 
 // helper functions
-function drawBorderRect(ctx, x, y, width, height, color) {
+export function drawBorderRect(ctx, x, y, width, height, color) {
   ctx.beginPath();
   ctx.strokeStyle = color;
   ctx.rect(x, y, width, height);
@@ -60,9 +60,7 @@ function drawBorderRect(ctx, x, y, width, height, color) {
 // TODO HACKY
 // initialize use of window.gamegame exploit to share things through files
 window.gamegame = {
-  classes: {},
   CONSTANTS,
-  getPlayerButtonState: () => {},
-  resetJumpKeyDownForNextFrame: () => {},
-  drawBorderRect,
 };
+
+export default CONSTANTS;
