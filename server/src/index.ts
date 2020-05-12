@@ -9,7 +9,6 @@ const http = createServer((req, res) => {
   // serve static html & image files
   return handler(req, res, {
     public: path.join(__dirname, '..', '..', 'client'),
-    symlinks: true,
   });
 });
 
