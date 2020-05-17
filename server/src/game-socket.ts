@@ -1,4 +1,8 @@
-import { formatPlayerInfo, formatSelfInfo } from './formatters';
+import {
+  formatPlayerInfo,
+  formatSelfInfo,
+  formatPlayerName,
+} from './formatters';
 import { WebSocket } from '@clusterws/cws';
 import ConnectedGameSockets from './connected-game-sockets';
 import SOCKET_CONSTANTS from './socket-constants';
@@ -55,8 +59,11 @@ class GameSocket {
       this.pose,
       this.horizontalScale,
       this.id,
-      this.playerName,
     );
+  };
+
+  getPlayerNameFormatted = () => {
+    return formatPlayerName(this.id, this.playerName);
   };
 
   onSocketClose = () => {
@@ -79,6 +86,9 @@ class GameSocket {
       this.connectedGameSockets.broadcastAllGameSocketsInfo();
     } else if (messageType === MSG_SET_NAME) {
       this.playerName = messageData;
+
+      // broadcast new name to all clients
+      this.connectedGameSockets.broadcastAllPlayerNames();
     }
   };
 }

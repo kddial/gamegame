@@ -7,6 +7,7 @@ const {
   MSG_DATA_DELIM,
   SHOW_SOCKET_INFO,
   MSG_SET_NAME,
+  MSG_PLAYER_NAME,
 } = CONSTANTS;
 import Player from './player.js';
 
@@ -19,7 +20,8 @@ class ClientSocket {
   isConnected: boolean;
   frameCounter: number;
   id: string;
-  otherPlayersInfo: Array<OtherPlayerInfo>;
+  otherPlayersInfo: Array<OtherPlayerInfo>; // CHANGE THIS into a object KEY. (like otherPlayersNameById)
+  otherPlayersNameById: { [key: string]: string };
   messagesQueue: Array<string | Uint8Array>;
 
   constructor() {
@@ -34,6 +36,7 @@ class ClientSocket {
     this.frameCounter = 0;
     this.id;
     this.otherPlayersInfo = [];
+    this.otherPlayersNameById = {};
     this.messagesQueue = []; // messages to send once socket is connected
   }
 
@@ -104,7 +107,7 @@ class ClientSocket {
   processBroadcastMessage = (messageArray: Array<string>) => {
     // get list of other players info
     // messageArray e.g. ['MSG_PLAYER', 'x__y__pose__scale', 'MSG_PLAYER', 'x__y__pose__scale', ...]
-    const otherPlayersInfo = [];
+    const newOtherPlayersInfo = [];
 
     let i = 0;
     while (i < messageArray.length) {
@@ -115,19 +118,27 @@ class ClientSocket {
         );
 
         if (id !== this.id) {
-          otherPlayersInfo.push({
+          newOtherPlayersInfo.push({
             x: parseInt(x),
             y: parseInt(y),
             pose,
             horizontalScale: parseInt(horizontalScale),
             id,
-            name,
           });
         }
+      } else if (messageArray[i] === MSG_PLAYER_NAME) {
+        console.log('BROADCAST FOR PLAYER NAME');
+        i++;
+        const [playerId, playerName] = messageArray[i].split(MSG_DATA_DELIM);
+        this.otherPlayersNameById[playerId] = playerName;
       }
+
       i++;
     }
-    this.otherPlayersInfo = otherPlayersInfo;
+
+    if (newOtherPlayersInfo.length > 0) {
+      this.otherPlayersInfo = newOtherPlayersInfo;
+    }
 
     if (SHOW_SOCKET_INFO) {
       document.getElementById(
@@ -139,7 +150,21 @@ class ClientSocket {
   sendPlayerInfo = (player: Player) => {
     const { x, y, pose, horizontalScale } = player;
     const socketMessage = `${MSG_PLAYER}${MSG_TYPE_DELIM}${x}__${y}__${pose}__${horizontalScale}__${this.id}`;
-    this.send(socketMessage);
+    // this.send(socketMessage);
+
+    // premature optimization !! might delete later
+    // dont spam the server with results every frame
+    // send at every 10 frames instead
+    const sendEveryNFrame = 10;
+    // console.log(sendEveryNFrame + '~~~~~~~~~~');
+    if (this.frameCounter === 0) {
+      this.send(socketMessage);
+      this.frameCounter++;
+    } else if (this.frameCounter === sendEveryNFrame) {
+      this.frameCounter = 0;
+    } else {
+      this.frameCounter++;
+    }
   };
 
   sendPlayerName = (name: string) => {

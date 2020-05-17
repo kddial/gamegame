@@ -1,5 +1,5 @@
 import GameSocket from './game-socket';
-import { formatBroadcastMessage } from './formatters';
+import { formatBroadcastMessage, formatPlayerName } from './formatters';
 import { WebSocketServer, WebSocket } from '@clusterws/cws';
 
 class ConnectedGameSockets {
@@ -27,6 +27,16 @@ class ConnectedGameSockets {
 
     // Allow to still split on "::" for child type messages. Looks like this
     // BROADCAST::PLAYER::x__y__pose__horiz__::PLAYER::player_data::PLAYER::player_data::
+    this.wsServer.broadcast(formatBroadcastMessage(broadcastMessage));
+  }
+
+  broadcastAllPlayerNames() {
+    let broadcastMessage = '';
+    this.gameSockets.forEach((gameSocket) => {
+      broadcastMessage += gameSocket.getPlayerNameFormatted();
+    });
+
+    // Broadcast each players name and its ID
     this.wsServer.broadcast(formatBroadcastMessage(broadcastMessage));
   }
 

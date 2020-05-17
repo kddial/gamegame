@@ -39,7 +39,10 @@ const GameLoop = ({
   SHOW_HIT_BOX && platformSprite.drawPlatformsHitBox(platforms);
 
   // draw other players
-  otherPlayersSprite.renderOtherPlayersSprite(clientSocket.otherPlayersInfo);
+  otherPlayersSprite.renderOtherPlayersSprite(
+    clientSocket.otherPlayersInfo,
+    clientSocket.otherPlayersNameById,
+  );
 
   // draw player last (so it is on top of everything else)
   playerSprite.drawPlayerSprite(player);

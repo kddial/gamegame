@@ -4,6 +4,7 @@ const {
   MSG_PLAYER,
   MSG_BROADCAST,
   MSG_TYPE_DELIM,
+  MSG_PLAYER_NAME,
 } = SOCKET_CONSTANTS;
 
 export const formatPlayerInfo = (
@@ -12,13 +13,16 @@ export const formatPlayerInfo = (
   pose: string,
   horizontalScale: number,
   id: number,
-  playerName: string = '',
 ) => {
-  return `${MSG_PLAYER}${MSG_TYPE_DELIM}${x}__${y}__${pose}__${horizontalScale}__${id}__${playerName}${MSG_TYPE_DELIM}`;
+  return `${MSG_PLAYER}${MSG_TYPE_DELIM}${x}__${y}__${pose}__${horizontalScale}__${id}${MSG_TYPE_DELIM}`;
 };
 
 export const formatSelfInfo = (id: number) => {
   return `${MSG_SELF}${MSG_TYPE_DELIM}${id}`;
+};
+
+export const formatPlayerName = (id: number, playerName: string) => {
+  return `${MSG_PLAYER_NAME}${MSG_TYPE_DELIM}${id}__${playerName}${MSG_TYPE_DELIM}`;
 };
 
 export const formatBroadcastMessage = (broadcastMessage: string) => {

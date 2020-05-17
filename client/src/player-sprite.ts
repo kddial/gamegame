@@ -249,9 +249,11 @@ export class OtherPlayersSprite {
 
   renderOtherPlayersSprite = (
     otherPlayersInfoArray: Array<OtherPlayerInfo>,
+    otherPlayersNameById: { [key: string]: string },
   ) => {
     otherPlayersInfoArray.forEach((otherPlayerInfo) => {
-      const { x, y, pose, horizontalScale, id, name } = otherPlayerInfo;
+      const { x, y, pose, horizontalScale, id } = otherPlayerInfo;
+      const playerName = otherPlayersNameById[id] ?? '';
 
       if (
         Object.keys(this.otherPlayersSpriteInstances).includes(id) === false
@@ -266,7 +268,7 @@ export class OtherPlayersSprite {
         y,
         pose,
         horizontalScale,
-        name,
+        playerName,
       );
     });
 
