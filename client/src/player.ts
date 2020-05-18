@@ -1,7 +1,4 @@
-import {
-  getPlayerButtonState,
-  resetJumpKeyDownForNextFrame,
-} from './key-press.js';
+import KeyPress from './key-press.js';
 import CONSTANTS from './constants.js';
 const {
   LEFT,
@@ -175,8 +172,8 @@ class Player {
     }
   }
 
-  step(platforms: Platforms) {
-    const playerButtonState = getPlayerButtonState();
+  step(platforms: Platforms, keyPress: KeyPress) {
+    const playerButtonState = keyPress.getPlayerButtonState();
     const direction = playerButtonState.includes(RIGHT) ? RIGHT : LEFT;
     this.horizontalScale = direction === RIGHT ? 1 : -1;
 
@@ -192,7 +189,7 @@ class Player {
     if (playerButtonState.includes(JUMP) && this.isJumping === false) {
       this.isJumping = true;
       this.yVelocity = JUMP_Y_VELOCITY;
-      resetJumpKeyDownForNextFrame();
+      keyPress.resetJumpKeyDownForNextFrame();
     }
 
     // apply gravity to yVelocity if:

@@ -16,6 +16,7 @@ const platformSpriteInstance = new PlatformSprite(canvasInstance.ctx);
 const playerSpriteInstance = new PlayerSprite(canvasInstance.ctx, init);
 const otherPlayersSpriteInstance = new OtherPlayersSprite(canvasInstance.ctx);
 const platformsInstance = new Platforms();
+const keyPressInstance = new KeyPress(playerInstance);
 
 // step frame
 function step() {
@@ -27,6 +28,7 @@ function step() {
     platforms: platformsInstance,
     platformSprite: platformSpriteInstance,
     clientSocket: clientSocketInstance,
+    keyPress: keyPressInstance,
   });
   window.requestAnimationFrame(step);
   return;
