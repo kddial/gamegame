@@ -228,6 +228,10 @@ class Player {
     // fetch player name
     this.getNameFromInput();
   }
+
+  addToMessages(message: string) {
+    this.messages.unshift(message);
+  }
 }
 
 export default Player;

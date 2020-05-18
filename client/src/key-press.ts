@@ -125,7 +125,7 @@ class KeyPress {
     const message = messageInput.value;
     messageInput.value = ''; // clear value after sending it
     messageInput.blur(); // lose input focus to move player around again
-    console.log('message', message); // TODO: remove console log
+    this.player.addToMessages(message);
   }
 
   // reset jump button key down in the immediate next frame

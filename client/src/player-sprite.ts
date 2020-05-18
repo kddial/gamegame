@@ -243,12 +243,19 @@ class PlayerSprite {
   }
 
   drawMessages(x: number, y: number, messages: Array<string>) {
-    const rectWidth = 100;
+    if (messages.length === 0) {
+      return;
+    }
+
+    const message = messages[0];
+    const LETTER_WIDTH = 8.5; // based on monospaced 14px
+    const rectWidth = message.length * LETTER_WIDTH;
     const xDisplaced = this.calculateXDisplaced(x, rectWidth);
     const messageHeight = 14;
     const yAbovePlayer = y - messageHeight;
 
     // draw background white rect under text with opacity
+    this.ctx.globalAlpha = 0.9;
     drawFillRect(
       this.ctx,
       xDisplaced,
@@ -257,12 +264,13 @@ class PlayerSprite {
       messageHeight,
       'white',
     );
+    this.ctx.globalAlpha = 1.0;
 
     // draw text
     this.ctx.font = 'normal 14px monospace';
     this.ctx.fillStyle = 'black';
     this.ctx.textBaseline = 'top';
-    this.ctx.fillText(name, xDisplaced, yAbovePlayer);
+    this.ctx.fillText(message, xDisplaced, yAbovePlayer);
   }
 }
 
