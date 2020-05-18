@@ -8,6 +8,7 @@ const {
   RUN_LEFT,
   RIGHT,
   LEFT,
+  PLAYER_NAME_INPUT_ID,
 } = CONSTANTS;
 
 // define glocal variables used in this file
@@ -18,7 +19,7 @@ let _shouldPreventContinuousJump = false;
 // Function to detect if document is focused/active on
 // inputs, so we do not register them as player's movement.
 function areInputsActive() {
-  const nameInput = document.getElementById('player-name-input');
+  const nameInput = document.getElementById(PLAYER_NAME_INPUT_ID);
   return document.activeElement === nameInput;
 }
 

@@ -12,7 +12,7 @@ const {
   RUN_X_VELOCITY,
   JUMP_Y_VELOCITY,
   GRAVITY_Y_VELOCITY,
-  PLATFORM_FLOOR_Y,
+  PLAYER_NAME_INPUT_ID,
 } = CONSTANTS;
 import Platform from './platform.js';
 import Platforms from './platforms.js';
@@ -62,7 +62,7 @@ class Player {
     if (sessionStorageName) {
       this.name = sessionStorageName;
       const nameInput = <HTMLInputElement>(
-        document.getElementById('player-name-input')
+        document.getElementById(PLAYER_NAME_INPUT_ID)
       );
       nameInput.value = sessionStorageName;
       this.clientSocket.sendPlayerName(sessionStorageName);
@@ -163,7 +163,7 @@ class Player {
 
   getNameFromInput() {
     const nameInput = <HTMLInputElement>(
-      document.getElementById('player-name-input')
+      document.getElementById(PLAYER_NAME_INPUT_ID)
     );
     const name = nameInput.value;
     if (name && this.name !== name) {

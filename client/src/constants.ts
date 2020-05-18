@@ -47,6 +47,10 @@ const CONSTANTS = {
 
   // socket constants
   ...SOCKET_CONSTANTS,
+
+  // DOM input ids
+  PLAYER_NAME_INPUT_ID: 'player-name-input',
+  MESSAGE_INPUT_ID: 'message-input',
 };
 
 export default CONSTANTS;
