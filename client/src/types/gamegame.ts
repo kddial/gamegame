@@ -6,4 +6,4 @@ interface OtherPlayerInfo {
   id: string;
 }
 
-// rename this file to gamegame-types
+// TODO: rename this file to gamegame-types

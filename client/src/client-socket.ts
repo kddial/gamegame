@@ -127,7 +127,6 @@ class ClientSocket {
           });
         }
       } else if (messageArray[i] === MSG_PLAYER_NAME) {
-        console.log('BROADCAST FOR PLAYER NAME');
         i++;
         const [playerId, playerName] = messageArray[i].split(MSG_DATA_DELIM);
         this.otherPlayersNameById[playerId] = playerName;
