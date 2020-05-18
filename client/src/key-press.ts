@@ -9,6 +9,8 @@ const {
   RIGHT,
   LEFT,
   PLAYER_NAME_INPUT_ID,
+  MESSAGE_INPUT_ID,
+  CANVAS_ID,
 } = CONSTANTS;
 
 // define glocal variables used in this file
@@ -20,14 +22,25 @@ let _shouldPreventContinuousJump = false;
 // inputs, so we do not register them as player's movement.
 function areInputsActive() {
   const nameInput = document.getElementById(PLAYER_NAME_INPUT_ID);
-  return document.activeElement === nameInput;
+  const messageInput = document.getElementById(MESSAGE_INPUT_ID);
+  return (
+    document.activeElement === nameInput ||
+    document.activeElement === messageInput
+  );
 }
 
 window.addEventListener('keydown', keyDownListener, false);
 function keyDownListener(event: KeyboardEvent) {
   if (areInputsActive() === true) {
+    if (event.key.toLowerCase() === 'enter') {
+      sendMessageOnEnter();
+    }
     return;
   }
+  if (event.key.toLowerCase() === 'enter') {
+    document.getElementById(MESSAGE_INPUT_ID).focus();
+  }
+
   _keyPress[event.key.toLowerCase()] = Date.now();
 }
 
@@ -94,6 +107,16 @@ export function getPlayerButtonState() {
 
   _playerButtonState = state;
   return state;
+}
+
+function sendMessageOnEnter() {
+  const messageInput = <HTMLInputElement>(
+    document.getElementById(MESSAGE_INPUT_ID)
+  );
+  const message = messageInput.value;
+  messageInput.value = ''; // clear value after sending it
+  messageInput.blur(); // lose input focus to move player around again
+  console.log('message', message); // TODO: remove console log
 }
 
 // reset jump button key down in the immediate next frame
