@@ -20,7 +20,7 @@ class ClientSocket {
   isConnected: boolean;
   frameCounter: number;
   id: string;
-  otherPlayersInfo: Array<OtherPlayerInfo>; // CHANGE THIS into a object KEY. (like otherPlayersNameById)
+  otherPlayersInfo: Array<OtherPlayerInfo>; // hold other players movements
   otherPlayersNameById: { [key: string]: string };
   messagesQueue: Array<string | Uint8Array>;
 
@@ -150,21 +150,20 @@ class ClientSocket {
   sendPlayerInfo = (player: Player) => {
     const { x, y, pose, horizontalScale } = player;
     const socketMessage = `${MSG_PLAYER}${MSG_TYPE_DELIM}${x}__${y}__${pose}__${horizontalScale}__${this.id}`;
-    // this.send(socketMessage);
+    this.send(socketMessage);
 
     // premature optimization !! might delete later
     // dont spam the server with results every frame
     // send at every 10 frames instead
-    const sendEveryNFrame = 10;
-    // console.log(sendEveryNFrame + '~~~~~~~~~~');
-    if (this.frameCounter === 0) {
-      this.send(socketMessage);
-      this.frameCounter++;
-    } else if (this.frameCounter === sendEveryNFrame) {
-      this.frameCounter = 0;
-    } else {
-      this.frameCounter++;
-    }
+    // const sendEveryNFrame = 10;
+    // if (this.frameCounter === 0) {
+    //   this.send(socketMessage);
+    //   this.frameCounter++;
+    // } else if (this.frameCounter === sendEveryNFrame) {
+    //   this.frameCounter = 0;
+    // } else {
+    //   this.frameCounter++;
+    // }
   };
 
   sendPlayerName = (name: string) => {
