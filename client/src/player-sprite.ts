@@ -158,11 +158,12 @@ class PlayerSprite {
   }
 
   drawPlayerSprite(player: Player) {
-    const { x, y, pose, horizontalScale, name } = player;
+    const { x, y, pose, horizontalScale, name, messages } = player;
     this.setHorizontalScale(horizontalScale);
     this.setSpritePose(pose);
     this.drawSpritePose(x, y);
     this.drawPlayerName(x, y, name);
+    this.drawMessages(x, y, messages);
   }
 
   drawMockPlayerSprite(
@@ -215,23 +216,53 @@ class PlayerSprite {
     }
     const LETTER_WIDTH = 8.5; // based on monospaced 14px
     const rectWidth = name.length * LETTER_WIDTH;
-
-    // find the difference between the two mids, and add that to x
-    // to render the text in the center below the sprite
-    const diffInX = PLAYER_SPRITE_W / 2 - rectWidth / 2;
-    const xCentered = x + diffInX;
+    const xDisplaced = this.calculateXDisplaced(x, rectWidth);
     const yUnderPlayer = y + PLAYER_SPRITE_H + 2;
 
     // draw background white rect under text with opacity
     this.ctx.globalAlpha = 0.9;
-    drawFillRect(this.ctx, xCentered, yUnderPlayer, rectWidth, 14, 'white');
+    drawFillRect(this.ctx, xDisplaced, yUnderPlayer, rectWidth, 14, 'white');
     this.ctx.globalAlpha = 1.0;
 
     // draw text
     this.ctx.font = 'normal 14px monospace';
     this.ctx.fillStyle = 'black';
     this.ctx.textBaseline = 'top';
-    this.ctx.fillText(name, xCentered, yUnderPlayer);
+    this.ctx.fillText(name, xDisplaced, yUnderPlayer);
+  }
+
+  // Must render rects as an X point. So we calculated how far
+  // want want to displace x to the left, so that the rectangle
+  // is rendered centered to the player
+  calculateXDisplaced(xPlayer: number, rectWidth: number) {
+    // find the difference between the two mids, and add that to x
+    // to render the text in the center below the sprite
+    const diffInX = PLAYER_SPRITE_W / 2 - rectWidth / 2;
+    const xDisplaced = xPlayer + diffInX;
+    return xDisplaced;
+  }
+
+  drawMessages(x: number, y: number, messages: Array<string>) {
+    const rectWidth = 100;
+    const xDisplaced = this.calculateXDisplaced(x, rectWidth);
+    const messageHeight = 14;
+    const yAbovePlayer = y - messageHeight;
+
+    // draw background white rect under text with opacity
+    drawFillRect(
+      this.ctx,
+      xDisplaced,
+      yAbovePlayer,
+      rectWidth,
+      messageHeight,
+      'white',
+    );
+
+    // draw text
+    this.ctx.font = 'normal 14px monospace';
+    this.ctx.fillStyle = 'black';
+    this.ctx.textBaseline = 'top';
+    this.ctx.fillText(name, xDisplaced, yAbovePlayer);
   }
 }
 

@@ -36,6 +36,7 @@ class Player {
   heightHitBox: number;
   name: string;
   clientSocket: ClientSocket;
+  messages: Array<string>;
 
   constructor(clientSocket: ClientSocket) {
     this.x = 100;
@@ -55,6 +56,7 @@ class Player {
     this.clientSocket = clientSocket;
     this.name = '';
     this.initPlayerNameFromSessionStorage();
+    this.messages = [];
   }
 
   initPlayerNameFromSessionStorage() {
