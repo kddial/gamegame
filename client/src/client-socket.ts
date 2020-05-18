@@ -147,11 +147,12 @@ class ClientSocket {
   };
 
   sendPlayerInfo = (player: Player) => {
-    const SHOULD_SLOW_FRAMES = true;
     const { x, y, pose, horizontalScale } = player;
     const socketMessage = `${MSG_PLAYER}${MSG_TYPE_DELIM}${x}__${y}__${pose}__${horizontalScale}__${this.id}`;
 
-    if (SHOULD_SLOW_FRAMES === false) {
+    // Used for debugging with less frames to send, so the websocket tab in dev tools doesnt choke.
+    // SHOULD_SLOW_FRAMES
+    if (false) {
       this.send(socketMessage);
     } else {
       // premature optimization !! might delete later
