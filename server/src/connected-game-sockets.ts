@@ -1,5 +1,5 @@
 import GameSocket from './game-socket';
-import { formatBroadcastMessage, formatPlayerName } from './formatters';
+import { formatBroadcastMessage } from './formatters';
 import { WebSocketServer, WebSocket } from '@clusterws/cws';
 
 class ConnectedGameSockets {

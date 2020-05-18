@@ -65,8 +65,8 @@ class Player {
         document.getElementById('player-name-input')
       );
       nameInput.value = sessionStorageName;
+      this.clientSocket.sendPlayerName(sessionStorageName);
     }
-    this.clientSocket.sendPlayerName(sessionStorageName);
   }
 
   // TODO: i might have to make hit boxes PER pose frame
