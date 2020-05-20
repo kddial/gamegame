@@ -22,7 +22,7 @@ class ClientSocket {
   id: string;
   otherPlayersInfo: Array<OtherPlayerInfo>; // hold other players movements
   otherPlayersNameById: { [key: string]: string };
-  messagesQueue: Array<string | Uint8Array>;
+  sendQueue: Array<string | Uint8Array>;
 
   constructor() {
     this.socket = new WebSocket(`ws://${HOST}`);
@@ -37,7 +37,7 @@ class ClientSocket {
     this.id;
     this.otherPlayersInfo = [];
     this.otherPlayersNameById = {};
-    this.messagesQueue = []; // messages to send once socket is connected
+    this.sendQueue = []; // messages to send once socket is connected
   }
 
   send = (message: string | Uint8Array) => {
@@ -48,7 +48,7 @@ class ClientSocket {
         'Message is added to queue to send on socket connection:',
         message,
       );
-      this.messagesQueue.push(message);
+      this.sendQueue.push(message);
     }
   };
 
@@ -56,7 +56,7 @@ class ClientSocket {
     console.log('-- on open');
     this.isConnected = true;
 
-    this.messagesQueue.forEach((message) => {
+    this.sendQueue.forEach((message) => {
       this.send(message);
     });
   };
