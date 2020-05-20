@@ -30,6 +30,7 @@ const GameLoop = ({
   // update player positions
   player.step(platforms, keyPress);
   // send updated player position to socket
+  clientSocket.stepFrameCounter();
   clientSocket.sendPlayerInfo(player);
 
   //--- drawing ---

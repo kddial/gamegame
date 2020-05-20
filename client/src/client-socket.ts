@@ -146,26 +146,26 @@ class ClientSocket {
     }
   };
 
+  stepFrameCounter = () => {
+    this.frameCounter++;
+    if (this.frameCounter === 60) {
+      this.frameCounter = 0;
+    }
+  };
+
   sendPlayerInfo = (player: Player) => {
+    // NOTE: used for throttle websocket sends, so I can debug the messages in the chrome network tab
+    const sendEveryNFrame = 10; // TODO: set this back to 1, to send on every frame
     const { x, y, pose, horizontalScale } = player;
     const socketMessage = `${MSG_PLAYER}${MSG_TYPE_DELIM}${x}__${y}__${pose}__${horizontalScale}__${this.id}`;
 
-    // Used for debugging with less frames to send, so the websocket tab in dev tools doesnt choke.
-    // DEBUG_MODE_ON === true
-    if (true) {
-      // premature optimization !! might delete later
-      // dont spam the server with results every frame
-      // send at every 10 frames instead
-      const sendEveryNFrame = 10;
-      if (this.frameCounter === 0) {
+    if (sendEveryNFrame > 1) {
+      // throttle sending messages
+      if (Number.isInteger(this.frameCounter / sendEveryNFrame)) {
         this.send(socketMessage);
-        this.frameCounter++;
-      } else if (this.frameCounter === sendEveryNFrame) {
-        this.frameCounter = 0;
-      } else {
-        this.frameCounter++;
       }
     } else {
+      // send messages on every step
       this.send(socketMessage);
     }
   };
@@ -173,6 +173,10 @@ class ClientSocket {
   sendPlayerName = (name: string) => {
     const socketMessage = `${MSG_SET_NAME}${MSG_TYPE_DELIM}${name}`;
     this.send(socketMessage);
+  };
+
+  sendMessages = (player: Player) => {
+    // send every 30 frames, that is 0.5 seconds
   };
 }
 
