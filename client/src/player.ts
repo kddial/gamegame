@@ -232,7 +232,7 @@ class Player {
   }
 
   removeExpiredMessages() {
-    const EXPIRE_AFTER_MS = 4000; // milliseconds
+    const EXPIRE_AFTER_MS = 8000; // milliseconds
     let i = this.messages.length - 1;
     const now = Date.now();
     while (i >= 0) {

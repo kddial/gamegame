@@ -247,30 +247,38 @@ class PlayerSprite {
       return;
     }
 
-    const message = messages[0][1];
-    const LETTER_WIDTH = 8.5; // based on monospaced 14px
-    const rectWidth = message.length * LETTER_WIDTH;
-    const xDisplaced = this.calculateXDisplaced(x, rectWidth);
-    const messageHeight = 14;
-    const yAbovePlayer = y - messageHeight;
+    messages.forEach((message, i) => {
+      const messageText = message[1];
+      const horizontalPadding = 2;
+      const verticalPadding = 2;
+      const LETTER_WIDTH = 8.5; // based on monospaced 14px
+      const messageHeight = 14 + verticalPadding * 2;
 
-    // draw background white rect under text with opacity
-    this.ctx.globalAlpha = 0.9;
-    drawFillRect(
-      this.ctx,
-      xDisplaced,
-      yAbovePlayer,
-      rectWidth,
-      messageHeight,
-      'white',
-    );
-    this.ctx.globalAlpha = 1.0;
+      const rectWidth = messageText.length * LETTER_WIDTH;
+      const xDisplaced = this.calculateXDisplaced(x, rectWidth);
+      const messageIndexMargin = messageHeight * (i + 1);
+      const yAbovePlayer = y - messageIndexMargin;
 
-    // draw text
-    this.ctx.font = 'normal 14px monospace';
-    this.ctx.fillStyle = 'black';
-    this.ctx.textBaseline = 'top';
-    this.ctx.fillText(message, xDisplaced, yAbovePlayer);
+      // draw background white rect under text with opacity
+      drawFillRect(
+        this.ctx,
+        xDisplaced - horizontalPadding,
+        yAbovePlayer,
+        rectWidth + horizontalPadding * 2,
+        messageHeight,
+        'white',
+      );
+
+      // draw text
+      this.ctx.font = 'normal 14px monospace';
+      this.ctx.fillStyle = 'black';
+      this.ctx.textBaseline = 'top';
+      this.ctx.fillText(
+        messageText,
+        xDisplaced,
+        yAbovePlayer + verticalPadding,
+      );
+    });
   }
 }
 
