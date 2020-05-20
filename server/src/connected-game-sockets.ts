@@ -16,7 +16,13 @@ class ConnectedGameSockets {
   connectSocket(socket: WebSocket) {
     const newGameSocket = new GameSocket(this, socket, this.idCounter++);
     this.gameSockets.push(newGameSocket);
+    this.broadcastOnNewConnection();
+  }
+
+  // broadcast info for new player connection
+  broadcastOnNewConnection() {
     this.broadcastAllGameSocketsInfo();
+    this.broadcastAllPlayerNames();
   }
 
   broadcastAllGameSocketsInfo() {
