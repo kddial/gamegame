@@ -242,12 +242,12 @@ class PlayerSprite {
     return xDisplaced;
   }
 
-  drawMessages(x: number, y: number, messages: Array<string>) {
+  drawMessages(x: number, y: number, messages: Array<[number, string]>) {
     if (messages.length === 0) {
       return;
     }
 
-    const message = messages[0];
+    const message = messages[0][1];
     const LETTER_WIDTH = 8.5; // based on monospaced 14px
     const rectWidth = message.length * LETTER_WIDTH;
     const xDisplaced = this.calculateXDisplaced(x, rectWidth);

@@ -33,7 +33,7 @@ class Player {
   heightHitBox: number;
   name: string;
   clientSocket: ClientSocket;
-  messages: Array<string>;
+  messages: Array<[number, string]>;
 
   constructor(clientSocket: ClientSocket) {
     this.x = 100;
@@ -173,6 +173,8 @@ class Player {
   }
 
   step(platforms: Platforms, keyPress: KeyPress) {
+    this.removeExpiredMessages();
+
     const playerButtonState = keyPress.getPlayerButtonState();
     const direction = playerButtonState.includes(RIGHT) ? RIGHT : LEFT;
     this.horizontalScale = direction === RIGHT ? 1 : -1;
@@ -229,8 +231,25 @@ class Player {
     this.getNameFromInput();
   }
 
+  removeExpiredMessages() {
+    const EXPIRE_AFTER_MS = 4000; // milliseconds
+    let i = this.messages.length - 1;
+    const now = Date.now();
+    while (i >= 0) {
+      if (now - this.messages[i][0] > EXPIRE_AFTER_MS) {
+        // remove the last element
+        this.messages.pop();
+        // the messages are in recent to oldest order,
+        // so all messages before index i can carry on without expiring.
+        return;
+      } else {
+        i--;
+      }
+    }
+  }
+
   addToMessages(message: string) {
-    this.messages.unshift(message);
+    this.messages.unshift([Date.now(), message]);
   }
 }
 
