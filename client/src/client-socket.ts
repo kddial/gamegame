@@ -151,10 +151,8 @@ class ClientSocket {
     const socketMessage = `${MSG_PLAYER}${MSG_TYPE_DELIM}${x}__${y}__${pose}__${horizontalScale}__${this.id}`;
 
     // Used for debugging with less frames to send, so the websocket tab in dev tools doesnt choke.
-    // SHOULD_SLOW_FRAMES
-    if (false) {
-      this.send(socketMessage);
-    } else {
+    // DEBUG_MODE_ON === true
+    if (true) {
       // premature optimization !! might delete later
       // dont spam the server with results every frame
       // send at every 10 frames instead
@@ -167,6 +165,8 @@ class ClientSocket {
       } else {
         this.frameCounter++;
       }
+    } else {
+      this.send(socketMessage);
     }
   };
 
