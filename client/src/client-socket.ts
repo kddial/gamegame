@@ -146,7 +146,10 @@ class ClientSocket {
       i++;
     }
 
-    if (newOtherPlayersInfo.length > 0) {
+    if (
+      newOtherPlayersInfo.length > 0 || // when there any other players
+      newOtherPlayersInfo.length !== this.otherPlayersInfo.length // when there are zero other players
+    ) {
       this.otherPlayersInfo = newOtherPlayersInfo;
     }
 
@@ -166,7 +169,7 @@ class ClientSocket {
 
   sendPlayerInfo = (player: Player) => {
     // NOTE: sendEveryNFrame is used to throttle websocket sends, so I can debug the messages in the chrome network tab
-    const sendEveryNFrame = 1;
+    const sendEveryNFrame = 1; // should be value 1.
     const { x, y, pose, horizontalScale } = player;
     const socketMessage = `${MSG_PLAYER}${MSG_TYPE_DELIM}${x}__${y}__${pose}__${horizontalScale}__${this.id}`;
 
