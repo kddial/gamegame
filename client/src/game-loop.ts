@@ -29,9 +29,10 @@ const GameLoop = ({
 }) => {
   // update player positions
   player.step(platforms, keyPress);
-  // send updated player position to socket
+  // send updated player position & messages to socket
   clientSocket.stepFrameCounter();
   clientSocket.sendPlayerInfo(player);
+  clientSocket.sendMessages(player.messages);
 
   //--- drawing ---
   canvas.resetFrame();
@@ -45,6 +46,7 @@ const GameLoop = ({
   otherPlayersSprite.renderOtherPlayersSprite(
     clientSocket.otherPlayersInfo,
     clientSocket.otherPlayersNameById,
+    clientSocket.otherPlayersMessagesById,
   );
 
   // draw player last (so it is on top of everything else)

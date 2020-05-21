@@ -163,7 +163,11 @@ class PlayerSprite {
     this.setSpritePose(pose);
     this.drawSpritePose(x, y);
     this.drawPlayerName(x, y, name);
-    this.drawMessages(x, y, messages);
+    this.drawMessages(
+      x,
+      y,
+      messages.map((msg) => msg[1]), // only pass down the string values, ignore the timestamps
+    );
   }
 
   drawMockPlayerSprite(
@@ -172,11 +176,13 @@ class PlayerSprite {
     pose: string,
     horizontalScale: number,
     name: string,
+    messages: Array<string>,
   ) {
     this.setHorizontalScale(horizontalScale);
     this.setSpritePose(pose);
     this.drawSpritePose(x, y);
     this.drawPlayerName(x, y, name);
+    this.drawMessages(x, y, messages);
   }
 
   drawPlayerHitBox(player: Player) {
@@ -242,13 +248,15 @@ class PlayerSprite {
     return xDisplaced;
   }
 
-  drawMessages(x: number, y: number, messages: Array<[number, string]>) {
+  drawMessages(x: number, y: number, messages: Array<string>) {
     if (messages.length === 0) {
       return;
     }
 
-    messages.forEach((message, i) => {
-      const messageText = message[1];
+    messages.forEach((messageText, i) => {
+      if (messageText.length === 0) {
+        return;
+      }
       const horizontalPadding = 2;
       const verticalPadding = 2;
       const LETTER_WIDTH = 8.5; // based on monospaced 14px
@@ -297,10 +305,12 @@ export class OtherPlayersSprite {
   renderOtherPlayersSprite = (
     otherPlayersInfoArray: Array<OtherPlayerInfo>,
     otherPlayersNameById: { [key: string]: string },
+    otherPlayersMessagesById: { [key: string]: Array<string> },
   ) => {
     otherPlayersInfoArray.forEach((otherPlayerInfo) => {
       const { x, y, pose, horizontalScale, id } = otherPlayerInfo;
       const playerName = otherPlayersNameById[id] ?? '';
+      const messages = otherPlayersMessagesById[id] ?? [];
 
       if (
         Object.keys(this.otherPlayersSpriteInstances).includes(id) === false
@@ -316,6 +326,7 @@ export class OtherPlayersSprite {
         pose,
         horizontalScale,
         playerName,
+        messages,
       );
     });
 

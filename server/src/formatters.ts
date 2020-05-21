@@ -5,6 +5,7 @@ const {
   MSG_BROADCAST,
   MSG_TYPE_DELIM,
   MSG_PLAYER_NAME,
+  MSG_CHAT_MESSAGE,
 } = SOCKET_CONSTANTS;
 
 export const formatPlayerInfo = (
@@ -27,4 +28,12 @@ export const formatPlayerName = (id: number, playerName: string) => {
 
 export const formatBroadcastMessage = (broadcastMessage: string) => {
   return `${MSG_BROADCAST}${MSG_TYPE_DELIM}${broadcastMessage}`;
+};
+
+export const formatPlayerChatMessages = (
+  id: number,
+  messages: Array<string>,
+) => {
+  const concatMessages = messages.join('__');
+  return `${MSG_CHAT_MESSAGE}${MSG_TYPE_DELIM}${id}__${concatMessages}${MSG_TYPE_DELIM}`;
 };

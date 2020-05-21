@@ -46,6 +46,14 @@ class ConnectedGameSockets {
     this.wsServer.broadcast(formatBroadcastMessage(broadcastMessage));
   }
 
+  broadcastAllMessages() {
+    let broadcastMessage = '';
+    this.gameSockets.forEach((gameSocket) => {
+      broadcastMessage += gameSocket.getPlayerChatMessagesFormatted();
+    });
+    this.wsServer.broadcast(formatBroadcastMessage(broadcastMessage));
+  }
+
   removeGameSocketById(id: number) {
     const { gameSockets } = this;
     for (let i = 0; i < gameSockets.length; i++) {

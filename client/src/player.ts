@@ -239,8 +239,13 @@ class Player {
       if (now - this.messages[i][0] > EXPIRE_AFTER_MS) {
         // remove the last element
         this.messages.pop();
+
+        // broadcast removal of message
+        this.clientSocket.sendMessages(this.messages, true);
+
         // the messages are in recent to oldest order,
         // so all messages before index i can carry on without expiring.
+        // Therefore we can exit out of the function.
         return;
       } else {
         i--;
@@ -250,6 +255,7 @@ class Player {
 
   addToMessages(message: string) {
     this.messages.unshift([Date.now(), message]);
+    this.clientSocket.sendMessages(this.messages, true);
   }
 }
 

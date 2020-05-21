@@ -8,6 +8,7 @@ const {
   SHOW_SOCKET_INFO,
   MSG_SET_NAME,
   MSG_PLAYER_NAME,
+  MSG_CHAT_MESSAGE,
 } = CONSTANTS;
 import Player from './player.js';
 
@@ -22,6 +23,7 @@ class ClientSocket {
   id: string;
   otherPlayersInfo: Array<OtherPlayerInfo>; // hold other players movements
   otherPlayersNameById: { [key: string]: string };
+  otherPlayersMessagesById: { [key: string]: Array<string> };
   sendQueue: Array<string | Uint8Array>;
 
   constructor() {
@@ -37,6 +39,7 @@ class ClientSocket {
     this.id;
     this.otherPlayersInfo = [];
     this.otherPlayersNameById = {};
+    this.otherPlayersMessagesById = {};
     this.sendQueue = []; // messages to send once socket is connected
   }
 
@@ -130,6 +133,14 @@ class ClientSocket {
         i++;
         const [playerId, playerName] = messageArray[i].split(MSG_DATA_DELIM);
         this.otherPlayersNameById[playerId] = playerName;
+      } else if (messageArray[i] === MSG_CHAT_MESSAGE) {
+        i++;
+        const messages = messageArray[i].split(MSG_DATA_DELIM);
+        const playerId = messages.shift();
+
+        if (playerId !== this.id) {
+          this.otherPlayersMessagesById[playerId] = messages;
+        }
       }
 
       i++;
@@ -154,8 +165,8 @@ class ClientSocket {
   };
 
   sendPlayerInfo = (player: Player) => {
-    // NOTE: used for throttle websocket sends, so I can debug the messages in the chrome network tab
-    const sendEveryNFrame = 10; // TODO: set this back to 1, to send on every frame
+    // NOTE: sendEveryNFrame is used to throttle websocket sends, so I can debug the messages in the chrome network tab
+    const sendEveryNFrame = 20; // TODO: set this back to 1, to send on every frame
     const { x, y, pose, horizontalScale } = player;
     const socketMessage = `${MSG_PLAYER}${MSG_TYPE_DELIM}${x}__${y}__${pose}__${horizontalScale}__${this.id}`;
 
@@ -175,8 +186,26 @@ class ClientSocket {
     this.send(socketMessage);
   };
 
-  sendMessages = (player: Player) => {
+  sendMessages = (
+    messages: Array<[number, string]>,
+    ignoreFrameCountAndEmptyCondition: boolean = false,
+  ) => {
+    if (ignoreFrameCountAndEmptyCondition === false && messages.length === 0) {
+      return;
+    }
+
     // send every 30 frames, that is 0.5 seconds
+    const sendEveryNFrame = 30;
+    if (
+      ignoreFrameCountAndEmptyCondition === false &&
+      Number.isInteger(this.frameCounter / sendEveryNFrame) === false
+    ) {
+      return;
+    }
+
+    const concatMessages = messages.map((msg) => msg[1]).join('__');
+    const socketMessage = `${MSG_CHAT_MESSAGE}${MSG_TYPE_DELIM}${this.id}__${concatMessages}`;
+    this.send(socketMessage);
   };
 }
 
