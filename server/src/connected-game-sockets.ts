@@ -23,6 +23,7 @@ class ConnectedGameSockets {
   broadcastOnNewConnection() {
     this.broadcastAllGameSocketsInfo();
     this.broadcastAllPlayerNames();
+    this.broadcastAllMessages();
   }
 
   broadcastAllGameSocketsInfo() {

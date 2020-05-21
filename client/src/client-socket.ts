@@ -166,7 +166,7 @@ class ClientSocket {
 
   sendPlayerInfo = (player: Player) => {
     // NOTE: sendEveryNFrame is used to throttle websocket sends, so I can debug the messages in the chrome network tab
-    const sendEveryNFrame = 20; // TODO: set this back to 1, to send on every frame
+    const sendEveryNFrame = 1;
     const { x, y, pose, horizontalScale } = player;
     const socketMessage = `${MSG_PLAYER}${MSG_TYPE_DELIM}${x}__${y}__${pose}__${horizontalScale}__${this.id}`;
 

@@ -76,6 +76,8 @@ class GameSocket {
 
   onSocketClose = () => {
     this.connectedGameSockets.removeGameSocketById(this.id);
+    // TODO: need to broadcast which player leaves, so the client side can clear
+    // their memory of stale 'otherPlayersMessagesById' and 'otherPlayersNameById'
   };
 
   onSocketMessage = (message: string) => {
