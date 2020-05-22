@@ -1,8 +1,9 @@
 import Player from './player.js';
 import { drawBorderRect, drawFillRect } from './draw-helpers.js';
 import CONSTANTS from './constants.js';
+import ImageLoader from './image-loader.js';
+
 const {
-  IMG_PATH_PREFIX,
   IDLE,
   RUN,
   JUMP,
@@ -12,7 +13,6 @@ const {
   HIT_BOX_COLOR,
   SHOW_SPRITE_BOX,
 } = CONSTANTS;
-const IMG_SPRITE_PATH = 'adventurer-v1_5-sheet.png';
 
 const SPRITE_POSES = {
   [IDLE]: {
@@ -50,7 +50,6 @@ const SPRITE_POSES = {
 };
 
 class PlayerSprite {
-  loaded: boolean;
   img: HTMLImageElement;
   ctx: CanvasRenderingContext2D;
   pose: string;
@@ -58,15 +57,8 @@ class PlayerSprite {
   frameCounter: number;
   horizontalScale: number;
 
-  constructor(ctx: CanvasRenderingContext2D, loadedCallback: () => void) {
-    this.loaded = false;
-    this.img = new Image();
-    this.img.addEventListener('load', () => {
-      console.log('player image loaded');
-      this.loaded = true;
-      loadedCallback();
-    });
-    this.img.src = IMG_PATH_PREFIX + IMG_SPRITE_PATH;
+  constructor(ctx: CanvasRenderingContext2D, imageLoader: ImageLoader) {
+    this.img = imageLoader.playerSpriteImg;
     this.ctx = ctx;
     this.pose = IDLE;
     this.poseIndex = 0;
@@ -75,8 +67,8 @@ class PlayerSprite {
   }
 
   drawImage(sourceXi = 0, sourceYi = 0, destX = 0, destY = 0) {
-    if (this.loaded === false) {
-      console.log('image not loaded yet');
+    if (!!this.img?.src === false) {
+      console.log('Player image not loaded yet');
       return;
     }
 
@@ -296,10 +288,12 @@ export class OtherPlayersSprite {
   otherPlayersSpriteInstances: {
     [key: string]: PlayerSprite;
   };
+  imageLoader: ImageLoader;
 
-  constructor(ctx: CanvasRenderingContext2D) {
+  constructor(ctx: CanvasRenderingContext2D, imageLoader: ImageLoader) {
     this.ctx = ctx;
     this.otherPlayersSpriteInstances = {};
+    this.imageLoader = imageLoader;
   }
 
   renderOtherPlayersSprite = (
@@ -316,7 +310,7 @@ export class OtherPlayersSprite {
         Object.keys(this.otherPlayersSpriteInstances).includes(id) === false
       ) {
         // instance does not exist, create new
-        const spriteInstance = new PlayerSprite(this.ctx, () => {});
+        const spriteInstance = new PlayerSprite(this.ctx, this.imageLoader);
         this.otherPlayersSpriteInstances[id] = spriteInstance;
       }
 
