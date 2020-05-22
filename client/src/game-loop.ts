@@ -32,7 +32,6 @@ const GameLoop = ({
   // send updated player position & messages to socket
   clientSocket.stepFrameCounter();
   clientSocket.sendPlayerInfo(player);
-  clientSocket.sendMessages(player.messages);
 
   //--- drawing ---
   canvas.resetFrame();

@@ -241,7 +241,7 @@ class Player {
         this.messages.pop();
 
         // broadcast removal of message
-        this.clientSocket.sendMessages(this.messages, true);
+        this.clientSocket.sendMessages(this.messages);
 
         // the messages are in recent to oldest order,
         // so all messages before index i can carry on without expiring.
@@ -255,7 +255,7 @@ class Player {
 
   addToMessages(message: string) {
     this.messages.unshift([Date.now(), message]);
-    this.clientSocket.sendMessages(this.messages, true);
+    this.clientSocket.sendMessages(this.messages);
   }
 }
 

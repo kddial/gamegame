@@ -189,23 +189,7 @@ class ClientSocket {
     this.send(socketMessage);
   };
 
-  sendMessages = (
-    messages: Array<[number, string]>,
-    ignoreFrameCountAndEmptyCondition: boolean = false,
-  ) => {
-    if (ignoreFrameCountAndEmptyCondition === false && messages.length === 0) {
-      return;
-    }
-
-    // send every 30 frames, that is 0.5 seconds
-    const sendEveryNFrame = 30;
-    if (
-      ignoreFrameCountAndEmptyCondition === false &&
-      Number.isInteger(this.frameCounter / sendEveryNFrame) === false
-    ) {
-      return;
-    }
-
+  sendMessages = (messages: Array<[number, string]>) => {
     const concatMessages = messages.map((msg) => msg[1]).join('__');
     const socketMessage = `${MSG_CHAT_MESSAGE}${MSG_TYPE_DELIM}${this.id}__${concatMessages}`;
     this.send(socketMessage);
