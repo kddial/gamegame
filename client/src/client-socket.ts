@@ -191,6 +191,7 @@ class ClientSocket {
     this.send(socketMessage);
   };
 
+  // send chat messages
   sendMessages = (messages: Array<[number, string]>) => {
     const concatMessages = messages.map((msg) => msg[1]).join('__');
     const socketMessage = `${MSG_CHAT_MESSAGE}${MSG_TYPE_DELIM}${this.id}__${concatMessages}`;
