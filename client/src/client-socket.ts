@@ -108,6 +108,8 @@ class ClientSocket {
   };
 
   processBroadcastMessage = (messageArray: Array<string>) => {
+    let broadcastType = '';
+
     // get list of other players info
     // messageArray e.g. ['MSG_PLAYER', 'x__y__pose__scale', 'MSG_PLAYER', 'x__y__pose__scale', ...]
     const newOtherPlayersInfo = [];
@@ -115,6 +117,7 @@ class ClientSocket {
     let i = 0;
     while (i < messageArray.length) {
       if (messageArray[i] === MSG_PLAYER) {
+        broadcastType = MSG_PLAYER;
         i++;
         const [x, y, pose, horizontalScale, id, name] = messageArray[i].split(
           MSG_DATA_DELIM,
@@ -130,10 +133,12 @@ class ClientSocket {
           });
         }
       } else if (messageArray[i] === MSG_PLAYER_NAME) {
+        broadcastType = MSG_PLAYER_NAME;
         i++;
         const [playerId, playerName] = messageArray[i].split(MSG_DATA_DELIM);
         this.otherPlayersNameById[playerId] = playerName;
       } else if (messageArray[i] === MSG_CHAT_MESSAGE) {
+        broadcastType = MSG_CHAT_MESSAGE;
         i++;
         const messages = messageArray[i].split(MSG_DATA_DELIM);
         const playerId = messages.shift();
@@ -146,10 +151,7 @@ class ClientSocket {
       i++;
     }
 
-    if (
-      newOtherPlayersInfo.length > 0 || // when there any other players
-      newOtherPlayersInfo.length !== this.otherPlayersInfo.length // when there are zero other players
-    ) {
+    if (broadcastType === MSG_PLAYER) {
       this.otherPlayersInfo = newOtherPlayersInfo;
     }
 
