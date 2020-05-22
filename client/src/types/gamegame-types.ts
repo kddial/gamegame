@@ -5,5 +5,3 @@ interface OtherPlayerInfo {
   horizontalScale: number;
   id: string;
 }
-
-// TODO: rename this file to gamegame-types
