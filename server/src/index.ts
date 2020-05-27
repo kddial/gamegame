@@ -9,8 +9,8 @@ import os from 'os';
 const PORT = 2000;
 
 const options = {
-  cert: fs.readFileSync(os.homedir() + '/.gamegame/localhost.cert'),
-  key: fs.readFileSync(os.homedir() + '/.gamegame/localhost.key'),
+  cert: fs.readFileSync(os.homedir() + '/.gamegame/https.cert'),
+  key: fs.readFileSync(os.homedir() + '/.gamegame/https.key'),
 };
 
 const server = https.createServer(options, (req, res) => {
