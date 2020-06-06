@@ -14,7 +14,17 @@ const options = {
   key: fs.readFileSync(os.homedir() + '/.gamegame/https.key'),
 };
 
+const visitMetricsInstance = new VisitMetrics();
+
 const server = https.createServer(options, (req, res) => {
+  if (req.method === 'POST' && req.url === '/new-visit') {
+    console.log('LOG: new visit metric added');
+    visitMetricsInstance.addNewVisitDataPoint();
+    res.writeHead(200, { 'Content-Type': 'text/plain' });
+    res.end('success');
+    return;
+  }
+
   // serve static html & image files
   return handler(req, res, {
     public: path.join(__dirname, '..', '..', 'client'),
@@ -28,14 +38,12 @@ const wsServer = new WebSocketServer({
 wsServer.startAutoPing(10000, true); // check if clients are alive, every 10 sec
 
 const connectedSocketsInstance = new ConnectedSockets(wsServer);
-const visitMetricsInstance = new VisitMetrics();
 
 server.listen(PORT, () => {
-  console.log(`running on  https://localhost:${PORT}`);
+  console.log(`LOG: running on https://localhost:${PORT}`);
 });
 
 wsServer.on('connection', (socket, req) => {
   console.log('LOG: new web socket connection');
-  visitMetricsInstance.addNewVisitDataPoint();
   connectedSocketsInstance.connectSocket(socket);
 });
