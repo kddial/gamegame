@@ -18,3 +18,7 @@ input {
 .input-containers .input-label {
   width: 100px;
 }
+
+input:focus::placeholder {
+  opacity: 0;
+}
