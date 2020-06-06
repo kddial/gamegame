@@ -16,12 +16,19 @@ const options = {
 
 const visitMetricsInstance = new VisitMetrics();
 
-const server = https.createServer(options, (req, res) => {
+const server = https.createServer(options, async (req, res) => {
   if (req.method === 'POST' && req.url === '/new-visit') {
     console.log('LOG: new visit metric added');
     visitMetricsInstance.addNewVisitDataPoint();
     res.writeHead(200, { 'Content-Type': 'text/plain' });
     res.end('success');
+    return;
+  }
+
+  if (req.method === 'GET' && req.url === '/visits') {
+    const visits = await visitMetricsInstance.getTotalVisits();
+    res.writeHead(200, { 'Content-Type': 'text/plain' });
+    res.end(`${visits}`);
     return;
   }
 
