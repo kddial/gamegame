@@ -18,3 +18,7 @@ input {
 .input-containers .input-label {
   width: 100px;
 }
+
+#visits {
+  min-height: 16px;
+}
