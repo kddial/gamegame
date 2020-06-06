@@ -5,6 +5,7 @@ import handler from 'serve-handler';
 import path from 'path';
 import fs from 'fs';
 import os from 'os';
+import VisitMetrics from './visit-metrics';
 
 const PORT = 2000;
 
@@ -27,12 +28,14 @@ const wsServer = new WebSocketServer({
 wsServer.startAutoPing(10000, true); // check if clients are alive, every 10 sec
 
 const connectedSocketsInstance = new ConnectedSockets(wsServer);
+const visitMetricsInstance = new VisitMetrics();
 
 server.listen(PORT, () => {
   console.log(`running on  https://localhost:${PORT}`);
 });
 
 wsServer.on('connection', (socket, req) => {
-  console.log('web socket connection init');
+  console.log('LOG: new web socket connection');
+  visitMetricsInstance.addNewVisitDataPoint();
   connectedSocketsInstance.connectSocket(socket);
 });
