@@ -1,6 +1,10 @@
 <html>
   <head>
     <title>game game kevin</title>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, minimum-scale=1"
+    />
     <link rel="stylesheet" href="/index.css" />
   </head>
   <body>
@@ -16,19 +20,28 @@
     </div>
     <br />
     <br />
-    <p>
-      Controls: <br />
-      "wasd" or "arrow keys" to move <br />
-      "w" or "up-arrow-key" or "spacebar" to jump
-    </p>
-    <p>
-      Chat: <br />
-      Focus on the input field by pressing the "enter" key, <br />
-      then type your message, <br />
-      then press "enter" again to send.
-    </p>
+    <div class="mobile-controls">
+      <div class="btn" id="touch-left">< Left</div>
+      <div class="btn" id="touch-right">Right ></div>
+      <div class="btn" id="touch-jump">Jump ^</div>
+    </div>
+
+    <div class="desktop-info">
+      <p>
+        Controls: <br />
+        "wasd" or "arrow keys" to move <br />
+        "w" or "up-arrow-key" or "spacebar" to jump
+      </p>
+      <p>
+        Chat: <br />
+        Focus on the input field by pressing the "enter" key, <br />
+        then type your message, <br />
+        then press "enter" again to send.
+      </p>
+    </div>
 
     <div>
+      <!-- used for debugging -->
       <br />
       <div id="self-info"></div>
       <br />

@@ -26,3 +26,41 @@ input {
 input:focus::placeholder {
   opacity: 0;
 }
+
+.mobile-controls {
+  display: none;
+}
+@media only screen and (max-width: 600px) {
+  .desktop-info {
+    display: none;
+  }
+
+  #canvas {
+    width: 100%;
+  }
+
+  #message-input {
+    max-width: 200px;
+  }
+
+  .mobile-controls {
+    display: flex;
+    flex-direction: row;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100vw;
+    height: 70px;
+    opacity: 0.7;
+  }
+
+  .mobile-controls .btn {
+    background: #fbfbfb;
+    border: 1px solid black;
+    flex: 1;
+    user-select: none;
+    -webkit-user-select: none;
+    display: flex;
+    justify-content: center;
+  }
+}

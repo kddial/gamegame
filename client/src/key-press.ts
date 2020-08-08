@@ -20,18 +20,21 @@ const BUTTON_JUMP = 'BUTTON_JUMP';
 
 class KeyPress {
   _keyPress: { [key: string]: number };
+  _touchPress: { [key: string]: number };
   _playerButtonState: string;
   _shouldPreventContinuousJump: boolean;
   player: Player;
 
   constructor(player: Player) {
     this._keyPress = {};
+    this._touchPress = {};
     this._playerButtonState = '';
     this._shouldPreventContinuousJump = false;
     this.player = player;
 
     window.addEventListener('keydown', this.keyDownListener, false);
     window.addEventListener('keyup', this.keyUpListener, false);
+    this.registerTouchListeners();
   }
 
   // Function to detect if document is focused/active on
@@ -68,6 +71,31 @@ class KeyPress {
     }
   };
 
+  registerTouchListeners = () => {
+    // TODO move button id's into constant file
+    document.getElementById('touch-left').ontouchstart = () => {
+      this._touchPress[BUTTON_LEFT] = Date.now();
+    };
+    document.getElementById('touch-left').ontouchend = () => {
+      this._touchPress[BUTTON_LEFT] = 0;
+    };
+
+    document.getElementById('touch-right').ontouchstart = () => {
+      this._touchPress[BUTTON_RIGHT] = Date.now();
+    };
+    document.getElementById('touch-right').ontouchend = () => {
+      this._touchPress[BUTTON_RIGHT] = 0;
+    };
+
+    document.getElementById('touch-jump').ontouchstart = () => {
+      this._touchPress[BUTTON_JUMP] = Date.now();
+      this._shouldPreventContinuousJump = false;
+    };
+    document.getElementById('touch-jump').ontouchend = () => {
+      this._touchPress[BUTTON_JUMP] = 0;
+    };
+  };
+
   reset_KeyPressedDown() {
     // TODO reset window key down buttons after 2 seconds
     // fixes the problem when you hold down the button, then lose focus of window
@@ -76,15 +104,26 @@ class KeyPress {
   // find buttons pressed
   buttonsPressed(): Array<string> {
     const buttons = [];
-    if (this._keyPress['arrowright'] || this._keyPress['d']) {
+    if (
+      this._keyPress['arrowright'] ||
+      this._keyPress['d'] ||
+      this._touchPress[BUTTON_RIGHT]
+    ) {
       buttons.push(BUTTON_RIGHT);
     }
-    if (this._keyPress['arrowleft'] || this._keyPress['a']) {
+    if (
+      this._keyPress['arrowleft'] ||
+      this._keyPress['a'] ||
+      this._touchPress[BUTTON_LEFT]
+    ) {
       buttons.push(BUTTON_LEFT);
     }
     if (
       this._shouldPreventContinuousJump === false &&
-      (this._keyPress['arrowup'] || this._keyPress['w'] || this._keyPress[' '])
+      (this._keyPress['arrowup'] ||
+        this._keyPress['w'] ||
+        this._keyPress[' '] ||
+        this._touchPress[BUTTON_JUMP])
     ) {
       buttons.push(BUTTON_JUMP);
     }
@@ -134,6 +173,7 @@ class KeyPress {
     this._keyPress['arrowup'] = 0;
     this._keyPress['w'] = 0;
     this._keyPress[' '] = 0;
+    this._touchPress[BUTTON_JUMP] = 0;
   }
 }
 
