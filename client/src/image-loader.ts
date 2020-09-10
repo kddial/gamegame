@@ -5,16 +5,18 @@ class ImageLoader {
   onLoadCallback: () => void;
   playerSpriteImg: HTMLImageElement;
   platformSpriteImg: HTMLImageElement;
+  portalSpriteImg: HTMLImageElement;
   imageLoadCount: number;
   expectedImageLoadCount: number;
 
   constructor(onLoadCallback: () => void) {
     this.onLoadCallback = onLoadCallback;
     this.imageLoadCount = 0;
-    this.expectedImageLoadCount = 2;
 
+    this.expectedImageLoadCount = 3;
     this.loadPlayerSpriteImage();
     this.loadPlatformSpriteImage();
+    this.loadPortalSpriteImg();
   }
 
   loadPlayerSpriteImage() {
@@ -39,8 +41,21 @@ class ImageLoader {
     this.platformSpriteImg.src = IMG_PATH_PREFIX + IMG_FILENAME;
   }
 
+  loadPortalSpriteImg() {
+    this.portalSpriteImg = new Image();
+    this.portalSpriteImg.addEventListener('load', () => {
+      this.imageLoadCount++;
+      console.log('Portal sprite image loaded.');
+      debugger;
+      this.callOnLoadCallback();
+    });
+    const IMG_FILENAME = 'portal_v1.png';
+    this.portalSpriteImg.src = IMG_PATH_PREFIX + IMG_FILENAME;
+  }
+
   callOnLoadCallback() {
     if (this.imageLoadCount === this.expectedImageLoadCount) {
+      debugger;
       console.log(`All ${this.expectedImageLoadCount} images have loaded.`);
       this.onLoadCallback();
     }

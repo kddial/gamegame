@@ -3,9 +3,11 @@ import PlayerSprite, { OtherPlayersSprite } from './player-sprite.js';
 import Player from './player.js';
 import Canvas from './canvas.js';
 import Platforms from './platforms.js';
+import Portals from './portals.js';
 import ClientSocket from './client-socket.js';
 import KeyPress from './key-press.js';
 import CONSTANTS from './constants.js';
+import PortalSprite from './portal-sprite.js';
 const { SHOW_HIT_BOX } = CONSTANTS;
 
 const GameLoop = ({
@@ -17,6 +19,8 @@ const GameLoop = ({
   platformSprite,
   clientSocket,
   keyPress,
+  portalSprite,
+  portals,
 }: {
   canvas: Canvas;
   player: Player;
@@ -26,6 +30,8 @@ const GameLoop = ({
   platformSprite: PlatformSprite;
   clientSocket: ClientSocket;
   keyPress: KeyPress;
+  portalSprite: PortalSprite;
+  portals: Portals;
 }) => {
   // update player positions
   player.step(platforms, keyPress);
@@ -40,6 +46,9 @@ const GameLoop = ({
   Platforms.drawBottomCanvasBg(canvas.ctx);
   platformSprite.drawPlatforms(platforms);
   SHOW_HIT_BOX && platformSprite.drawPlatformsHitBox(platforms);
+
+  // draw portals
+  portalSprite.drawPortals(portals);
 
   // draw other players
   otherPlayersSprite.renderOtherPlayersSprite(

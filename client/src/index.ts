@@ -6,6 +6,8 @@ import GameLoop from './game-loop.js';
 import KeyPress from './key-press.js';
 import Platform from './platform.js';
 import Platforms from './platforms.js';
+import Portals from './portals.js';
+import PortalSprite from './portal-sprite.js';
 import ClientSocket from './client-socket.js';
 import CONSTANTS from './constants.js';
 import ImageLoader from './image-loader.js';
@@ -29,6 +31,15 @@ const otherPlayersSpriteInstance = new OtherPlayersSprite(
 const platformsInstance = new Platforms();
 const keyPressInstance = new KeyPress(playerInstance);
 
+debugger;
+const portalSpriteInstance = new PortalSprite(
+  canvasInstance.ctx,
+  imageLoaderInstance,
+);
+debugger;
+const portalsInstance = new Portals();
+debugger;
+
 // step frame
 function step() {
   GameLoop({
@@ -40,12 +51,16 @@ function step() {
     platformSprite: platformSpriteInstance,
     clientSocket: clientSocketInstance,
     keyPress: keyPressInstance,
+    portalSprite: portalSpriteInstance,
+    portals: portalsInstance,
   });
   window.requestAnimationFrame(step);
   return;
 }
 
 // init code when sprites are done loading
+debugger;
 function init() {
+  debugger;
   step();
 }
