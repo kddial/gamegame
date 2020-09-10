@@ -46,8 +46,8 @@ const CONSTANTS = {
   PLATFORM_SPRITE_H: 48,
 
   // portal sprite dimensions
-  PORTAL_SPRITE_W: 74,
-  PORTAL_SPRITE_H: 64,
+  PORTAL_SPRITE_W: 22,
+  PORTAL_SPRITE_H: 40,
 
   // socket constants
   ...SOCKET_CONSTANTS,

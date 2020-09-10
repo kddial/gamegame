@@ -31,14 +31,11 @@ const otherPlayersSpriteInstance = new OtherPlayersSprite(
 const platformsInstance = new Platforms();
 const keyPressInstance = new KeyPress(playerInstance);
 
-debugger;
 const portalSpriteInstance = new PortalSprite(
   canvasInstance.ctx,
   imageLoaderInstance,
 );
-debugger;
 const portalsInstance = new Portals();
-debugger;
 
 // step frame
 function step() {
@@ -59,8 +56,6 @@ function step() {
 }
 
 // init code when sprites are done loading
-debugger;
 function init() {
-  debugger;
   step();
 }

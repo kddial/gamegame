@@ -46,16 +46,14 @@ class ImageLoader {
     this.portalSpriteImg.addEventListener('load', () => {
       this.imageLoadCount++;
       console.log('Portal sprite image loaded.');
-      debugger;
       this.callOnLoadCallback();
     });
-    const IMG_FILENAME = 'portal_v1.png';
+    const IMG_FILENAME = 'portal_v3.png';
     this.portalSpriteImg.src = IMG_PATH_PREFIX + IMG_FILENAME;
   }
 
   callOnLoadCallback() {
     if (this.imageLoadCount === this.expectedImageLoadCount) {
-      debugger;
       console.log(`All ${this.expectedImageLoadCount} images have loaded.`);
       this.onLoadCallback();
     }

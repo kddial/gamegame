@@ -7,7 +7,7 @@ export default class Portals {
     this.instances = [
       // Portal args: (x, y)
 
-      new Portal(100, 100),
+      new Portal(292, 146),
     ];
   }
 }
