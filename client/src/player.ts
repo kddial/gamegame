@@ -1,3 +1,4 @@
+// @ts-nocheck
 import KeyPress from './key-press.js';
 import CONSTANTS from './constants.js';
 const {

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import SOCKET_CONSTANTS from './socket-constants.js';
 
 const CONSTANTS = {
@@ -54,6 +55,6 @@ const CONSTANTS = {
   CANVAS_ID: 'canvas',
 };
 
-window.CONSTANTS = CONSTANTS;
+window.CONSTANTS = CONSTANTS; // @ts-ignore
 
 export default CONSTANTS;
