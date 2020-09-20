@@ -6,9 +6,9 @@ const {
   IDLE,
   RUN,
   JUMP,
-  RUN_X_VELOCITY,
-  JUMP_Y_VELOCITY,
-  GRAVITY_Y_VELOCITY,
+  // RUN_X_VELOCITY,
+  // JUMP_Y_VELOCITY,
+  // GRAVITY_Y_VELOCITY,
   PLAYER_NAME_INPUT_ID,
 } = CONSTANTS;
 import Platform from './platform.js';
@@ -174,6 +174,9 @@ class Player {
 
   step(platforms: Platforms, keyPress: KeyPress) {
     this.removeExpiredMessages();
+    const JUMP_Y_VELOCITY = window.CONSTANTS.JUMP_Y_VELOCITY;
+    const RUN_X_VELOCITY = window.CONSTANTS.RUN_X_VELOCITY;
+    const GRAVITY_Y_VELOCITY = window.CONSTANTS.GRAVITY_Y_VELOCITY;
 
     const playerButtonState = keyPress.getPlayerButtonState();
     const direction = playerButtonState.includes(RIGHT) ? RIGHT : LEFT;

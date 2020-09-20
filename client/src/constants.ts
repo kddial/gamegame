@@ -54,4 +54,6 @@ const CONSTANTS = {
   CANVAS_ID: 'canvas',
 };
 
+window.CONSTANTS = CONSTANTS;
+
 export default CONSTANTS;
