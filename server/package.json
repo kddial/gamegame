@@ -14,7 +14,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@clusterws/cws": "^1.6.0",
+    "@clusterws/cws": "^3.0.0",
     "serve-handler": "^6.1.2"
   },
   "devDependencies": {

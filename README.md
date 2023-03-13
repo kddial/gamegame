@@ -1,9 +1,12 @@
 # dev and build
 
-To run dev locally
+Note: need to be on node.js v14 to use @clusterws/cws npm package on server.
+
+# To run dev locally
 
 ```
 // on server
+nvm use v14
 cd server
 yarn install
 yarn start
@@ -28,14 +31,15 @@ serve .      (this is a global npm package)
 go to http://localhost:5000
 ```
 
-To build for deployment
+# To build for deployment
 
 ```
+nvm use v14
 cd server
-yarn build
+yarn build     // this will also build client code
 
 cd dist
-node index.js
+node index.js  // this will serve client code as static files
 ```
 
 To deploy on digital ocean, ssh into the machine, and run the deploy script.
