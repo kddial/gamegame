@@ -7,7 +7,7 @@ import fs from 'fs';
 import os from 'os';
 import VisitMetrics from './visit-metrics';
 
-const PORT = 2000;
+const PORT = 443; // 443 for https
 
 let options;
 if (Boolean(process.env.IS_RAILWAY)) {
