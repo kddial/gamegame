@@ -1,7 +1,7 @@
 #!/bin/bash
 # scripts for https://railway.app/
 
-sudo ./copy-https-certs.sh
+sudo ./railway-create-local-certs.sh
 
 cd client
 npm install

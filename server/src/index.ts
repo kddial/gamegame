@@ -9,10 +9,19 @@ import VisitMetrics from './visit-metrics';
 
 const PORT = 2000;
 
-const options = {
-  cert: fs.readFileSync(os.homedir() + '/.gamegame/https.cert'),
-  key: fs.readFileSync(os.homedir() + '/.gamegame/https.key'),
-};
+let options;
+if (Boolean(process.env.IS_RAILWAY)) {
+  console.log('Is railway.app env, using certs from local file.');
+  options = {
+    cert: fs.readFileSync(path.join(__dirname, '..', '..', 'certs/https.cert')),
+    key: fs.readFileSync(path.join(__dirname, '..', '..', 'certs/https.key')),
+  };
+} else {
+  options = {
+    cert: fs.readFileSync(os.homedir() + '/.gamegame/https.cert'),
+    key: fs.readFileSync(os.homedir() + '/.gamegame/https.key'),
+  };
+}
 
 const visitMetricsInstance = new VisitMetrics();
 
