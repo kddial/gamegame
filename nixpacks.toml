@@ -1,3 +1,8 @@
 # Configuration for https://railway.app/
+# https://nixpacks.com/docs/guides/configuring-builds
 
 providers = ["...", "node"]
+
+[phases.setup]
+nixPkgs = ["...", "mkcert"] # Install packages from Nix
+aptPkgs = ["...", "libnss3-tools"] # Install with apt-get
