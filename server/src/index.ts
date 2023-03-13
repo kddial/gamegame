@@ -7,10 +7,12 @@ import fs from 'fs';
 import os from 'os';
 import VisitMetrics from './visit-metrics';
 
-const PORT = process.env.PORT || 443; // 443 for https
+const PORT = process.env.PORT || 2000;
 
 let options;
+let HOST = '127.0.0.1';
 if (Boolean(process.env.IS_RAILWAY)) {
+  HOST = '0.0.0.0';
   console.log('Is railway.app env, using certs from local file.');
   options = {
     cert: fs.readFileSync(path.join(__dirname, '..', '..', 'certs/https.cert')),
@@ -55,9 +57,15 @@ wsServer.startAutoPing(10000, true); // check if clients are alive, every 10 sec
 
 const connectedSocketsInstance = new ConnectedSockets(wsServer);
 
-server.listen(PORT, () => {
-  console.log(`LOG: running on https://localhost:${PORT}`);
-});
+server.listen(
+  {
+    host: HOST,
+    port: PORT,
+  },
+  () => {
+    console.log(`LOG: running on https://${HOST}:${PORT}`);
+  },
+);
 
 wsServer.on('connection', (socket, req) => {
   console.log('LOG: new web socket connection');
