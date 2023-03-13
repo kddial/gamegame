@@ -43,6 +43,12 @@ const server = https.createServer(options, async (req, res) => {
     return;
   }
 
+  if (req.method === 'GET' && req.url === '/health') {
+    res.writeHead(200, { 'Content-Type': 'text/plain' });
+    res.end(`health check passed.`);
+    return;
+  }
+
   // serve static html & image files
   return handler(req, res, {
     public: path.join(__dirname, '..', '..', 'client'),
