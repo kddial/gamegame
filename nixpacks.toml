@@ -1,0 +1,4 @@
+# Configuration for https://railway.app/
+# https://nixpacks.com/docs/guides/configuring-builds
+
+providers = ["...", "node"]

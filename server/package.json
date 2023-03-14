@@ -5,7 +5,8 @@
   "main": "src/index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "ts-node-dev --respawn --transpileOnly src/index.ts",
+    "dev": "ts-node-dev --respawn --transpileOnly src/index.ts",
+    "start": "node dist/index.js",
     "build": "npm run build-client && rm -rf dist && tsc --build .",
     "build-client": "cd ../client && npm run build",
     "prebuild": "npm run build-client",
@@ -14,7 +15,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@clusterws/cws": "^1.6.0",
+    "@clusterws/cws": "^3.0.0",
     "serve-handler": "^6.1.2"
   },
   "devDependencies": {
