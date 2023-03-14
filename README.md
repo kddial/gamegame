@@ -47,9 +47,12 @@ go to http://localhost:3000
 
 # To build for deployment
 
+Using https://railway.app for hosting node.js server with websockets.
+
 ```
 nvm use v14
-./railway-build.sh
+./railway-build.sh    // build command
 
-./railway-start.sh
+
+./railway-start.sh    // start command
 ```
