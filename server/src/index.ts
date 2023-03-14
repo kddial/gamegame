@@ -12,49 +12,9 @@ import VisitMetrics from './visit-metrics';
 const PORT = process.env.PORT || 2000;
 const HOST = process.env.HOST || '127.0.0.1';
 
-let options;
-if (Boolean(process.env.IS_RAILWAY)) {
-  console.log('This is a railway.app env, using certs from local file.');
-  options = {
-    cert: fs.readFileSync(path.join(__dirname, '..', '..', 'certs/https.cert')),
-    key: fs.readFileSync(path.join(__dirname, '..', '..', 'certs/https.key')),
-  };
-} else {
-  options = {
-    cert: fs.readFileSync(os.homedir() + '/.gamegame/https.cert'),
-    key: fs.readFileSync(os.homedir() + '/.gamegame/https.key'),
-  };
-}
-
 const visitMetricsInstance = new VisitMetrics();
 
-// todo delete
-// const serverHttp = http.createServer({}, async (req, res) => {
-//   if (req.method === 'GET' && req.url === '/health') {
-//     res.writeHead(200, { 'Content-Type': 'text/plain' });
-//     res.end(`health check passed.`);
-//     return;
-//   }
-
-//   if (req.method === 'GET') {
-//     res.writeHead(200, { 'Content-Type': 'text/plain' });
-//     res.end(`hello home page.`);
-//     return;
-//   }
-// });
-// serverHttp.listen(
-//   {
-//     host: HOST,
-//     port: PORT,
-//   },
-//   () => {
-//     console.log(`LOG: running on http://${HOST}:${PORT}`);
-//   },
-// );
-// todo delete
-
-const server = https.createServer(options, async (req, res) => {
-  console.log('~~~~~~~ request', req);
+const server = http.createServer({}, async (req, res) => {
   if (req.method === 'POST' && req.url === '/new-visit') {
     console.log('LOG: new visit metric added');
     visitMetricsInstance.addNewVisitDataPoint();
@@ -84,7 +44,7 @@ const server = https.createServer(options, async (req, res) => {
 });
 
 server.on('error', (err) => {
-  console.log('https server error');
+  console.log('ERROR: https server error');
   console.error(err);
 });
 
@@ -101,7 +61,7 @@ server.listen(
     port: PORT,
   },
   () => {
-    console.log(`LOG: running on https://${HOST}:${PORT}`);
+    console.log(`LOG: running on http://${HOST}:${PORT}`);
   },
 );
 
@@ -111,6 +71,6 @@ wsServer.on('connection', (socket, req) => {
 });
 
 wsServer.on('error', (err) => {
-  console.log('web socket server error');
+  console.log('ERROR: web socket server error');
   console.error(err);
 });
