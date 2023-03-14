@@ -1,4 +1,6 @@
 import https from 'https';
+import http from 'http';
+
 import { WebSocketServer } from '@clusterws/cws';
 import ConnectedSockets from './connected-game-sockets';
 import handler from 'serve-handler';
@@ -8,12 +10,11 @@ import os from 'os';
 import VisitMetrics from './visit-metrics';
 
 const PORT = process.env.PORT || 2000;
+const HOST = process.env.HOST || '127.0.0.1';
 
 let options;
-let HOST = '127.0.0.1';
 if (Boolean(process.env.IS_RAILWAY)) {
-  HOST = '0.0.0.0';
-  console.log('Is railway.app env, using certs from local file.');
+  console.log('This is a railway.app env, using certs from local file.');
   options = {
     cert: fs.readFileSync(path.join(__dirname, '..', '..', 'certs/https.cert')),
     key: fs.readFileSync(path.join(__dirname, '..', '..', 'certs/https.key')),
@@ -26,6 +27,31 @@ if (Boolean(process.env.IS_RAILWAY)) {
 }
 
 const visitMetricsInstance = new VisitMetrics();
+
+// todo delete
+const serverHttp = http.createServer({}, async (req, res) => {
+  if (req.method === 'GET' && req.url === '/health') {
+    res.writeHead(200, { 'Content-Type': 'text/plain' });
+    res.end(`health check passed.`);
+    return;
+  }
+
+  if (req.method === 'GET') {
+    res.writeHead(200, { 'Content-Type': 'text/plain' });
+    res.end(`hello home page.`);
+    return;
+  }
+});
+serverHttp.listen(
+  {
+    host: HOST,
+    port: PORT,
+  },
+  () => {
+    console.log(`LOG: running on https://${HOST}:${PORT}`);
+  },
+);
+// todo delete
 
 const server = https.createServer(options, async (req, res) => {
   if (req.method === 'POST' && req.url === '/new-visit') {
@@ -56,24 +82,26 @@ const server = https.createServer(options, async (req, res) => {
   });
 });
 
-const wsServer = new WebSocketServer({
-  server: server,
-});
-wsServer.startAutoPing(10000, true); // check if clients are alive, every 10 sec
+// TODO UNDO COMMENT
 
-const connectedSocketsInstance = new ConnectedSockets(wsServer);
+// const wsServer = new WebSocketServer({
+//   server: server,
+// });
+// wsServer.startAutoPing(10000, true); // check if clients are alive, every 10 sec
 
-server.listen(
-  {
-    host: HOST,
-    port: PORT,
-  },
-  () => {
-    console.log(`LOG: running on https://${HOST}:${PORT}`);
-  },
-);
+// const connectedSocketsInstance = new ConnectedSockets(wsServer);
 
-wsServer.on('connection', (socket, req) => {
-  console.log('LOG: new web socket connection');
-  connectedSocketsInstance.connectSocket(socket);
-});
+// server.listen(
+//   {
+//     host: HOST,
+//     port: PORT,
+//   },
+//   () => {
+//     console.log(`LOG: running on https://${HOST}:${PORT}`);
+//   },
+// );
+
+// wsServer.on('connection', (socket, req) => {
+//   console.log('LOG: new web socket connection');
+//   connectedSocketsInstance.connectSocket(socket);
+// });
