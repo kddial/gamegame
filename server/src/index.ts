@@ -29,31 +29,32 @@ if (Boolean(process.env.IS_RAILWAY)) {
 const visitMetricsInstance = new VisitMetrics();
 
 // todo delete
-const serverHttp = http.createServer({}, async (req, res) => {
-  if (req.method === 'GET' && req.url === '/health') {
-    res.writeHead(200, { 'Content-Type': 'text/plain' });
-    res.end(`health check passed.`);
-    return;
-  }
+// const serverHttp = http.createServer({}, async (req, res) => {
+//   if (req.method === 'GET' && req.url === '/health') {
+//     res.writeHead(200, { 'Content-Type': 'text/plain' });
+//     res.end(`health check passed.`);
+//     return;
+//   }
 
-  if (req.method === 'GET') {
-    res.writeHead(200, { 'Content-Type': 'text/plain' });
-    res.end(`hello home page.`);
-    return;
-  }
-});
-serverHttp.listen(
-  {
-    host: HOST,
-    port: PORT,
-  },
-  () => {
-    console.log(`LOG: running on https://${HOST}:${PORT}`);
-  },
-);
+//   if (req.method === 'GET') {
+//     res.writeHead(200, { 'Content-Type': 'text/plain' });
+//     res.end(`hello home page.`);
+//     return;
+//   }
+// });
+// serverHttp.listen(
+//   {
+//     host: HOST,
+//     port: PORT,
+//   },
+//   () => {
+//     console.log(`LOG: running on http://${HOST}:${PORT}`);
+//   },
+// );
 // todo delete
 
 const server = https.createServer(options, async (req, res) => {
+  console.log('~~~~~~~ request', req);
   if (req.method === 'POST' && req.url === '/new-visit') {
     console.log('LOG: new visit metric added');
     visitMetricsInstance.addNewVisitDataPoint();
@@ -82,26 +83,34 @@ const server = https.createServer(options, async (req, res) => {
   });
 });
 
-// TODO UNDO COMMENT
+server.on('error', (err) => {
+  console.log('https server error');
+  console.error(err);
+});
 
-// const wsServer = new WebSocketServer({
-//   server: server,
-// });
-// wsServer.startAutoPing(10000, true); // check if clients are alive, every 10 sec
+const wsServer = new WebSocketServer({
+  server: server,
+});
+wsServer.startAutoPing(10000, true); // check if clients are alive, every 10 sec
 
-// const connectedSocketsInstance = new ConnectedSockets(wsServer);
+const connectedSocketsInstance = new ConnectedSockets(wsServer);
 
-// server.listen(
-//   {
-//     host: HOST,
-//     port: PORT,
-//   },
-//   () => {
-//     console.log(`LOG: running on https://${HOST}:${PORT}`);
-//   },
-// );
+server.listen(
+  {
+    host: HOST,
+    port: PORT,
+  },
+  () => {
+    console.log(`LOG: running on https://${HOST}:${PORT}`);
+  },
+);
 
-// wsServer.on('connection', (socket, req) => {
-//   console.log('LOG: new web socket connection');
-//   connectedSocketsInstance.connectSocket(socket);
-// });
+wsServer.on('connection', (socket, req) => {
+  console.log('LOG: new web socket connection');
+  connectedSocketsInstance.connectSocket(socket);
+});
+
+wsServer.on('error', (err) => {
+  console.log('web socket server error');
+  console.error(err);
+});
