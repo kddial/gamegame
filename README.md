@@ -1,4 +1,15 @@
-# gamegame project
+# Gamegame
+
+<img width="110" alt="gamegame-preview b002f343" src="https://user-images.githubusercontent.com/2696834/226998336-fd65891e-3995-44ff-ae63-5cdf18b8b399.png">
+
+- try it out! at https://gamegame-production.up.railway.app/
+- works on both desktop and mobile
+
+# Video
+
+https://user-images.githubusercontent.com/2696834/226998370-3c0d9db5-6d3b-4af9-8dbd-d625328935f7.mov
+
+# Description
 
 Built gamegame to jump around with friends with chat. Jump quest is heavily inspired by Maplestory.
 
